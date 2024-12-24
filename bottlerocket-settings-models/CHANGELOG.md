@@ -9,7 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.6.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.7.0...HEAD
+
+## [0.7.0] - 2024-12-24
+
+## Model Changes
+
+### Added
+
+- Add kubernetes device ownership settings ([#69])
+
+### Changed
+
+- Align kubernetes cluster name validation with EKS ([#64]) Thanks @cartermckinnon
+
+[#64]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/64
+[#69]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/69
+
 
 ## [0.6.0] - 2024-10-02
 

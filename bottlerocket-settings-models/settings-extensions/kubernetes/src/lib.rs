@@ -94,6 +94,7 @@ pub struct KubernetesSettingsV1 {
     hostname_override_source: KubernetesHostnameOverrideSource,
     // Generated in `k8s-1.25+` variants only
     seccomp_default: bool,
+    device_ownership_from_security_context: bool,
 }
 
 type Result<T> = std::result::Result<T, Infallible>;
@@ -191,6 +192,7 @@ mod test {
                 hostname_override: None,
                 hostname_override_source: None,
                 seccomp_default: None,
+                device_ownership_from_security_context: None,
             })
         );
     }
