@@ -25,6 +25,9 @@ pub fn generate_defaults_toml() -> Result<()> {
     })?);
     defaults_dir.push("defaults.d");
 
+    // Reflect that we need to rerun if any of the default settings files have changed.
+    println!("cargo::rerun-if-changed={}", defaults_dir.display());
+
     // Find TOML config files specified by the variant.
     let walker = WalkDir::new(&defaults_dir)
         .follow_links(true) // we expect users to link to shared files
@@ -38,9 +41,6 @@ pub fn generate_defaults_toml() -> Result<()> {
     let mut defaults = Value::Table(Map::new());
     for entry in walker {
         let entry = entry.context(error::ListFilesSnafu { dir: &defaults_dir })?;
-
-        // Reflect that we need to rerun if any of the default settings files have changed.
-        println!("cargo:rerun-if-changed={}", entry.path().display());
 
         let data = fs::read_to_string(entry.path()).context(error::FileSnafu {
             op: "read",
