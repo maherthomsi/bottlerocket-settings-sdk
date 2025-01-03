@@ -52,7 +52,7 @@ members = [
 bottlerocket-settings-plugin = { path = "./bottlerocket-settings-plugin", version = "0.1" }
 bottlerocket-settings-derive = { path = "./bottlerocket-settings-derive", version = "0.1" }
 bottlerocket-settings-sdk = { path = "./bottlerocket-settings-sdk", version = "0.1" }
-bottlerocket-defaults-helper = { path = "./bottlerocket-defaults-helper", version = "0.1" }
+bottlerocket-defaults-helper = { path = "./bottlerocket-defaults-helper", version = "0.1.1" }
 bottlerocket-template-helper = { path = "./bottlerocket-template-helper", version = "0.1" }
 
 # Settings Models
