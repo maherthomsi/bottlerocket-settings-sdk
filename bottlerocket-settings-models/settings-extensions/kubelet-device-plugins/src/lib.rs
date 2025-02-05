@@ -43,10 +43,12 @@ impl SettingsModel for KubeletDevicePluginsV1 {
 mod test {
     use super::*;
     use bottlerocket_modeled_types::{
-        NvidiaDeviceIdStrategy, NvidiaDeviceListStrategy, NvidiaDeviceSharingStrategy,
-        NvidiaTimeSlicingSettings,
+        MigProfile, NvidiaDeviceIdStrategy, NvidiaDeviceListStrategy,
+        NvidiaDevicePartitioningStrategy, NvidiaDeviceSharingStrategy, NvidiaGpuModel,
+        NvidiaMigSettings, NvidiaTimeSlicingSettings,
     };
     use bounded_integer::BoundedI32;
+    use std::collections::HashMap;
 
     #[test]
     fn test_generate_kubelet_device_plugins() {
@@ -59,7 +61,7 @@ mod test {
 
     #[test]
     fn test_serde_kubelet_device_plugins() {
-        let test_json = r#"{"nvidia":{"pass-device-specs":true,"device-id-strategy":"index","device-list-strategy":"volume-mounts","device-sharing-strategy":"time-slicing","time-slicing":{"replicas":2,"rename-by-default":true,"fail-requests-greater-than-one":true}}}"#;
+        let test_json = r#"{"nvidia":{"pass-device-specs":true,"device-id-strategy":"index","device-list-strategy":"volume-mounts","device-sharing-strategy":"time-slicing","time-slicing":{"replicas":2,"rename-by-default":true,"fail-requests-greater-than-one":true},"device-partitioning-strategy":"mig","mig":{"profile":{"a100.40gb":"1g.5gb"}}}}"#;
 
         let device_plugins: KubeletDevicePluginsV1 = serde_json::from_str(test_json).unwrap();
         assert_eq!(
@@ -74,6 +76,13 @@ mod test {
                         replicas: Some(BoundedI32::new(2).unwrap()),
                         rename_by_default: Some(true),
                         fail_requests_greater_than_one: Some(true),
+                    }),
+                    device_partitioning_strategy: Some(NvidiaDevicePartitioningStrategy::MIG),
+                    mig: Some(NvidiaMigSettings {
+                        profile: Some(HashMap::from([(
+                            NvidiaGpuModel::try_from("a100.40gb").unwrap(),
+                            MigProfile::try_from("1g.5gb").unwrap()
+                        )]))
                     }),
                 }),
             }
