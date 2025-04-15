@@ -28,7 +28,7 @@ enum.
 The macro can take the following input parameters when used with wrapper structs (in most cases you
 will not need to use these; the defaults will "just work"):
 - `as_ref_str: bool`: Set to `true` if need the macro to treat your inner type as a `String`.
-   This will happen automatically if your inner type is named `String`.
+  This will happen automatically if your inner type is named `String`.
 - `inner`: The name of the field that holds your `inner` type. Defaults to `inner`.
 
 # Examples
