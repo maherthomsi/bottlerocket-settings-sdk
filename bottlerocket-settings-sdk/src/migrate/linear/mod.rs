@@ -252,7 +252,7 @@ impl LinearMigrator {
             .then_some((0, Forward)) // 0 hops required for "identity" migration
             .or_else(|| search_in_direction(Forward))
             .or_else(|| search_in_direction(Backward))
-            .map(|(num_hops, direction)| std::iter::repeat(direction).take(num_hops))
+            .map(|(num_hops, direction)| std::iter::repeat_n(direction, num_hops))
     }
 }
 
