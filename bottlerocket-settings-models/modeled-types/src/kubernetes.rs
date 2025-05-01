@@ -1485,7 +1485,6 @@ pub enum NvidiaDeviceIdStrategy {
 pub enum NvidiaDeviceListStrategy {
     Envvar,
     VolumeMounts,
-    CdiCri,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
