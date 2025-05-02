@@ -9,7 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.7.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.9.0...HEAD
+
+## [0.9.0] - 2025-05-02
+
+## Model Changes
+
+### Added
+
+- Added `container-log-max-workers` and `container-log-monitor-interval` to kubernetes settings model ([#80])
+- Added `single-process-oom-kill` to kubernetes settings model ([#81])
+
+[#80]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/80
+[#81]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/81
+
+## [0.8.0] - 2025-02-05
+
+## Model Changes
+
+### Added
+
+- Added NVIDIA MIG to kubernetes device plugins settings extension ([#63])
+
+[#63]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/63
 
 ## [0.7.0] - 2024-12-24
 
