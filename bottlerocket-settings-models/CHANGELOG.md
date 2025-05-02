@@ -10,6 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - See [unreleased changes here]
 
 [unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.7.0...HEAD
+## [0.8.0] - 2025-02-05
+
+## Model Changes
+
+### Added
+
+- Added NVIDIA MIG to kubernetes device plugins settings extension ([#63])
+
+[#63]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/63
 
 ## [0.7.0] - 2024-12-24
 
