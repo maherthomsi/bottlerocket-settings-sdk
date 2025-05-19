@@ -1481,10 +1481,40 @@ pub enum NvidiaDeviceIdStrategy {
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, Hash, Serialize, Deserialize)]
-#[serde(rename_all = "kebab-case")]
+#[serde(untagged)]
 pub enum NvidiaDeviceListStrategy {
+    Scalar(NvidiaDeviceListStrategyValues),
+    Vector(Vec<NvidiaDeviceListStrategyValues>),
+}
+
+#[derive(Debug, Clone, Eq, PartialEq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum NvidiaDeviceListStrategyValues {
     Envvar,
     VolumeMounts,
+    CdiCri,
+}
+
+impl NvidiaDeviceListStrategy {
+    pub fn iter(&self) -> Box<dyn Iterator<Item = &NvidiaDeviceListStrategyValues> + '_> {
+        match self {
+            Self::Scalar(inner) => Box::new(std::iter::once(inner)),
+            Self::Vector(inner) => Box::new(inner.iter()),
+        }
+    }
+}
+
+impl IntoIterator for NvidiaDeviceListStrategy {
+    type Item = NvidiaDeviceListStrategyValues;
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        match self {
+            Self::Scalar(inner) => vec![inner],
+            Self::Vector(inner) => inner,
+        }
+        .into_iter()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -1580,6 +1610,15 @@ string_impls_for!(MigProfile, "MigProfile");
 mod test_nvidia_device_plugins {
     use super::*;
 
+    fn helper_with_device_list_strategy(
+        device_list_strategy: Option<NvidiaDeviceListStrategy>,
+    ) -> NvidiaDevicePluginSettings {
+        NvidiaDevicePluginSettings {
+            device_list_strategy: device_list_strategy,
+            ..NvidiaDevicePluginSettings::default()
+        }
+    }
+
     #[test]
     fn valid_gpu_model() {
         for ok in &["a100.40gb", "a100.80gb", "h100.80gb", "h100.141gb"] {
@@ -1628,7 +1667,9 @@ mod test_nvidia_device_plugins {
             NvidiaDevicePluginSettings {
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
-                device_list_strategy: Some(NvidiaDeviceListStrategy::Envvar),
+                device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
+                    NvidiaDeviceListStrategyValues::Envvar
+                ),),
                 device_sharing_strategy: None,
                 time_slicing: None,
                 device_partitioning_strategy: None,
@@ -1649,7 +1690,9 @@ mod test_nvidia_device_plugins {
             NvidiaDevicePluginSettings {
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
-                device_list_strategy: Some(NvidiaDeviceListStrategy::Envvar),
+                device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
+                    NvidiaDeviceListStrategyValues::Envvar
+                ),),
                 device_sharing_strategy: Some(NvidiaDeviceSharingStrategy::TimeSlicing),
                 time_slicing: None,
                 device_partitioning_strategy: None,
@@ -1678,7 +1721,9 @@ mod test_nvidia_device_plugins {
             NvidiaDevicePluginSettings {
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
-                device_list_strategy: Some(NvidiaDeviceListStrategy::Envvar),
+                device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
+                    NvidiaDeviceListStrategyValues::Envvar
+                ),),
                 device_sharing_strategy: None,
                 time_slicing: None,
                 device_partitioning_strategy: Some(NvidiaDevicePartitioningStrategy::MIG),
@@ -1700,7 +1745,9 @@ mod test_nvidia_device_plugins {
             NvidiaDevicePluginSettings {
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
-                device_list_strategy: Some(NvidiaDeviceListStrategy::Envvar),
+                device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
+                    NvidiaDeviceListStrategyValues::Envvar
+                ),),
                 device_sharing_strategy: None,
                 time_slicing: None,
                 device_partitioning_strategy: Some(NvidiaDevicePartitioningStrategy::MIG),
@@ -1715,5 +1762,95 @@ mod test_nvidia_device_plugins {
 
         let results = serde_json::to_string(&nvidia_device_plugins).unwrap();
         assert_eq!(results, test_json);
+    }
+
+    #[test]
+    fn test_serde_nvidia_device_plugins_with_list_shape_nvidia_list_stradegy() {
+        let test_json_1 = r#"{"device-list-strategy":["volume-mounts","envvar","cdi-cri"]}"#;
+        let test_json_2 = r#"{"device-list-strategy":["volume-mounts","cdi-cri","envvar"]}"#;
+        let test_json_3 = r#"{"device-list-strategy":["envvar","volume-mounts","cdi-cri"]}"#;
+        let test_json_4 = r#"{"device-list-strategy":["envvar","cdi-cri","volume-mounts"]}"#;
+        let test_json_5 = r#"{"device-list-strategy":["cdi-cri","volume-mounts","envvar"]}"#;
+        let test_json_6 = r#"{"device-list-strategy":["cdi-cri","envvar","volume-mounts"]}"#;
+
+        let device_plugins_1: NvidiaDevicePluginSettings =
+            serde_json::from_str(test_json_1).unwrap();
+        assert_eq!(
+            device_plugins_1,
+            helper_with_device_list_strategy(Some(NvidiaDeviceListStrategy::Vector(vec![
+                NvidiaDeviceListStrategyValues::VolumeMounts,
+                NvidiaDeviceListStrategyValues::Envvar,
+                NvidiaDeviceListStrategyValues::CdiCri,
+            ])))
+        );
+
+        let device_plugins_2: NvidiaDevicePluginSettings =
+            serde_json::from_str(test_json_2).unwrap();
+        assert_eq!(
+            device_plugins_2,
+            helper_with_device_list_strategy(Some(NvidiaDeviceListStrategy::Vector(vec![
+                NvidiaDeviceListStrategyValues::VolumeMounts,
+                NvidiaDeviceListStrategyValues::CdiCri,
+                NvidiaDeviceListStrategyValues::Envvar,
+            ]))),
+        );
+
+        let device_plugins_3: NvidiaDevicePluginSettings =
+            serde_json::from_str(test_json_3).unwrap();
+        assert_eq!(
+            device_plugins_3,
+            helper_with_device_list_strategy(Some(NvidiaDeviceListStrategy::Vector(vec![
+                NvidiaDeviceListStrategyValues::Envvar,
+                NvidiaDeviceListStrategyValues::VolumeMounts,
+                NvidiaDeviceListStrategyValues::CdiCri,
+            ]))),
+        );
+
+        let device_plugins_4: NvidiaDevicePluginSettings =
+            serde_json::from_str(test_json_4).unwrap();
+        assert_eq!(
+            device_plugins_4,
+            helper_with_device_list_strategy(Some(NvidiaDeviceListStrategy::Vector(vec![
+                NvidiaDeviceListStrategyValues::Envvar,
+                NvidiaDeviceListStrategyValues::CdiCri,
+                NvidiaDeviceListStrategyValues::VolumeMounts,
+            ]))),
+        );
+
+        let device_plugins_5: NvidiaDevicePluginSettings =
+            serde_json::from_str(test_json_5).unwrap();
+        assert_eq!(
+            device_plugins_5,
+            helper_with_device_list_strategy(Some(NvidiaDeviceListStrategy::Vector(vec![
+                NvidiaDeviceListStrategyValues::CdiCri,
+                NvidiaDeviceListStrategyValues::VolumeMounts,
+                NvidiaDeviceListStrategyValues::Envvar,
+            ]))),
+        );
+
+        let device_plugins_6: NvidiaDevicePluginSettings =
+            serde_json::from_str(test_json_6).unwrap();
+        assert_eq!(
+            device_plugins_6,
+            helper_with_device_list_strategy(Some(NvidiaDeviceListStrategy::Vector(vec![
+                NvidiaDeviceListStrategyValues::CdiCri,
+                NvidiaDeviceListStrategyValues::Envvar,
+                NvidiaDeviceListStrategyValues::VolumeMounts,
+            ]))),
+        );
+
+        let results_1 = serde_json::to_string(&device_plugins_1).unwrap();
+        let results_2 = serde_json::to_string(&device_plugins_2).unwrap();
+        let results_3 = serde_json::to_string(&device_plugins_3).unwrap();
+        let results_4 = serde_json::to_string(&device_plugins_4).unwrap();
+        let results_5 = serde_json::to_string(&device_plugins_5).unwrap();
+        let results_6 = serde_json::to_string(&device_plugins_6).unwrap();
+
+        assert_eq!(results_1, test_json_1);
+        assert_eq!(results_2, test_json_2);
+        assert_eq!(results_3, test_json_3);
+        assert_eq!(results_4, test_json_4);
+        assert_eq!(results_5, test_json_5);
+        assert_eq!(results_6, test_json_6);
     }
 }

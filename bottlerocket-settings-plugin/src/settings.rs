@@ -10,7 +10,7 @@ functions.
 #![expect(non_local_definitions)]
 // Avoid `elide the lifetimes` warnings by clippy. The suggested changes do not make the code more
 // readable
-#![expect(clippy::needless_lifetimes)]
+#![allow(clippy::needless_lifetimes)]
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use serde_json::Value as JsonValue;
 use std::path::PathBuf;
