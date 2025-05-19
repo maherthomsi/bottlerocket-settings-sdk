@@ -9,7 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.9.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.10.0...HEAD
+
+
+## [0.10.0] - 2025-05-19
+
+## Model Changes
+
+### Added
+
+- Modified `nvidia-device-list-strategy` to accept either a list or a string and added `cdi-cri` as an accepted value ([#83])
+
+[#83]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/83
+
+[0.10.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.10.0...bottlerocket-settings-models-v0.9.0
 
 ## [0.9.0] - 2025-05-02
 
@@ -23,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#80]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/80
 [#81]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/81
 
+[0.9.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.9.0...bottlerocket-settings-models-v0.8.0
+
 ## [0.8.0] - 2025-02-05
 
 ## Model Changes
@@ -32,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added NVIDIA MIG to kubernetes device plugins settings extension ([#63])
 
 [#63]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/63
+
+[0.8.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.8.0...bottlerocket-settings-models-v0.7.0
 
 ## [0.7.0] - 2024-12-24
 
@@ -48,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#64]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/64
 [#69]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/69
 
+[0.7.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.7.0...bottlerocket-settings-models-v0.6.0
 
 ## [0.6.0] - 2024-10-02
 
