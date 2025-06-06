@@ -1459,6 +1459,35 @@ mod test_hostname_override_source {
     }
 }
 
+/// KubernetesMemorySwapBehavior represents the valid options for the memory swap behavior.
+#[derive(Debug, Clone, Eq, PartialEq, Hash, Serialize, Deserialize, Scalar)]
+pub enum KubernetesMemorySwapBehavior {
+    #[serde(alias = "no-swap")]
+    NoSwap,
+    #[serde(alias = "limited-swap")]
+    LimitedSwap,
+}
+
+#[cfg(test)]
+mod test_kubernetes_memory_swap_behavior {
+    use super::KubernetesMemorySwapBehavior;
+    use std::convert::TryFrom;
+
+    #[test]
+    fn good_swap_behavior() {
+        for ok in &["NoSwap", "no-swap", "LimitedSwap", "limited-swap"] {
+            KubernetesMemorySwapBehavior::try_from(*ok).unwrap();
+        }
+    }
+
+    #[test]
+    fn bad_swap_behavior() {
+        for err in &["", "bad", "100", &"a".repeat(64)] {
+            KubernetesMemorySwapBehavior::try_from(*err).unwrap_err();
+        }
+    }
+}
+
 // =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=
 
 /// NvidiaDevicePluginSettings contains the device sharing and partitioning related settings for Nvidia gpu.

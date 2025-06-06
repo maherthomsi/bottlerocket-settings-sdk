@@ -156,6 +156,9 @@ pub mod error {
 
         #[snafu(display("Invalid Kernel CpuSet value '{}'", input))]
         InvalidKernelCpuSetValue { input: String },
+
+        #[snafu(display("Invalid memory swap behavior value '{}'", input))]
+        InvalidMemorySwapBehavior { input: String },
     }
 
     /// Creates a `ValidationError` with a consistent message for strings with regex validations
