@@ -9,8 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.10.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.11.0...HEAD
 
+## [0.11.0] - 2025-06-13
+
+## Model Changes
+
+### Added
+
+- Added `memory-swap-behavior` to kubernetes settings model ([#88])
+
+[#88]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/88
+
+[0.11.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.10.0...bottlerocket-settings-models-v0.11.0
 
 ## [0.10.0] - 2025-05-19
 
