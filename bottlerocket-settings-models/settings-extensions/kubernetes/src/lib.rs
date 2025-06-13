@@ -6,9 +6,10 @@ use bottlerocket_modeled_types::{
     KubernetesCloudProvider, KubernetesClusterDnsIp, KubernetesClusterName,
     KubernetesDurationValue, KubernetesEvictionKey, KubernetesHostnameOverrideSource,
     KubernetesLabelKey, KubernetesLabelValue, KubernetesMemoryManagerPolicy,
-    KubernetesMemoryReservation, KubernetesQuantityValue, KubernetesReservedResourceKey,
-    KubernetesTaintValue, KubernetesThresholdValue, NonNegativeInteger, SingleLineString,
-    TopologyManagerPolicy, TopologyManagerScope, Url, ValidBase64, ValidLinuxHostname,
+    KubernetesMemoryReservation, KubernetesMemorySwapBehavior, KubernetesQuantityValue,
+    KubernetesReservedResourceKey, KubernetesTaintValue, KubernetesThresholdValue,
+    NonNegativeInteger, SingleLineString, TopologyManagerPolicy, TopologyManagerScope, Url,
+    ValidBase64, ValidLinuxHostname,
 };
 use bottlerocket_settings_sdk::{GenerateResult, SettingsModel};
 
@@ -83,6 +84,7 @@ pub struct KubernetesSettingsV1 {
     memory_manager_reserved_memory: HashMap<Identifier, KubernetesMemoryReservation>,
     memory_manager_policy: KubernetesMemoryManagerPolicy,
     reserved_cpus: KernelCpuSetValue,
+    memory_swap_behavior: KubernetesMemorySwapBehavior,
 
     // Settings where we generate a value based on the runtime environment.  The user can specify a
     // value to override the generated one, but typically would not.
@@ -190,6 +192,7 @@ mod test {
                 memory_manager_reserved_memory: None,
                 memory_manager_policy: None,
                 reserved_cpus: None,
+                memory_swap_behavior: None,
                 max_pods: None,
                 cluster_dns_ip: None,
                 cluster_domain: None,
