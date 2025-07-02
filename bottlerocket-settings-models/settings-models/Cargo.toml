@@ -29,6 +29,7 @@ settings-extension-bootstrap-containers.workspace = true
 settings-extension-cloudformation.workspace = true
 settings-extension-container-registry.workspace = true
 settings-extension-container-runtime.workspace = true
+settings-extension-container-runtime-plugins.workspace = true
 settings-extension-dns.workspace = true
 settings-extension-ecs.workspace = true
 settings-extension-host-containers.workspace = true

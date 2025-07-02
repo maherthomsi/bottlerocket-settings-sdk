@@ -32,6 +32,7 @@ pub use settings_extension_bootstrap_containers::{self, BootstrapContainersSetti
 pub use settings_extension_cloudformation::{self, CloudFormationSettingsV1};
 pub use settings_extension_container_registry::{self, RegistrySettingsV1};
 pub use settings_extension_container_runtime::{self, ContainerRuntimeSettingsV1};
+pub use settings_extension_container_runtime_plugins::{self, ContainerRuntimePluginsSettingsV1};
 pub use settings_extension_dns::{self, DnsSettingsV1};
 pub use settings_extension_ecs::{self, ECSSettingsV1};
 pub use settings_extension_host_containers::{self, HostContainersSettingsV1};
