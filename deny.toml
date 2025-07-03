@@ -21,6 +21,11 @@ allow = [
 
 exceptions = [
     { name = "generational-arena", allow = ["MPL-2.0"] },
+    { name = "unicode-ident", version = "1.0.13", allow = [
+        "MIT",
+        "Apache-2.0",
+        "Unicode-DFS-2016",
+    ] },
 ]
 
 [bans]
