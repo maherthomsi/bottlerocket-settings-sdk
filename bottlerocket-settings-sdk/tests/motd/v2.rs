@@ -90,7 +90,7 @@ fn exclaim(i: String) -> Result<String> {
 
 #[template_helper(ident = question_helper)]
 fn question(one: String, two: String) -> Result<String> {
-    Ok(format!("{}? {}??", one, two))
+    Ok(format!("{one}? {two}??"))
 }
 
 #[test]

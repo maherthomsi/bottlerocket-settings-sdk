@@ -11,7 +11,7 @@ fn main() -> ExitCode {
     {
         Ok(extension) => extension.run(),
         Err(e) => {
-            println!("{}", e);
+            println!("{e}");
             ExitCode::FAILURE
         }
     }

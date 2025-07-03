@@ -533,8 +533,7 @@ fn find_inner_field(data_struct: DataStruct, field_name: Option<&str>) -> (Strin
                 }
             }
             panic!(
-                "The Scalar derive macro could not find a field named '{}', in this struct",
-                field_name
+                "The Scalar derive macro could not find a field named '{field_name}', in this struct",
             );
         }
         Fields::Unnamed(unnamed_field) => {

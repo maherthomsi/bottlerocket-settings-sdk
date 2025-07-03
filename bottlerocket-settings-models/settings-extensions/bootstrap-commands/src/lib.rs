@@ -66,6 +66,8 @@ impl SettingsModel for BootstrapCommandsSettingsV1 {
     }
 }
 
+type Result<T> = std::result::Result<T, Infallible>;
+
 #[cfg(test)]
 mod test_bootstrap_command {
     use super::*;
@@ -144,5 +146,3 @@ mod test_bootstrap_command {
         assert!(bootstrap_commands_err.is_err());
     }
 }
-
-type Result<T> = std::result::Result<T, Infallible>;

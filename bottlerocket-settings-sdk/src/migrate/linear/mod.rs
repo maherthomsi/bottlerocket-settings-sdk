@@ -468,7 +468,7 @@ mod test {
         ]
         .into_iter()
         .for_each(|(start, to, expected)| {
-            eprintln!("Testing migration from {} to {}", start, to);
+            eprintln!("Testing migration from {start} to {to}");
             let migration: Option<Vec<MigrationDirection>> = LinearMigrator
                 .find_migration_route(&models, start, to)
                 .map(|route| route.collect());
@@ -540,7 +540,7 @@ mod test {
         ]
         .into_iter()
         .for_each(|(starting_value, starting_version)| {
-            eprintln!("Testing flood migration starting from {}", starting_version);
+            eprintln!("Testing flood migration starting from {starting_version}");
             let results = LinearMigrator
                 .perform_flood_migrations(&models, starting_value, starting_version)
                 .unwrap();

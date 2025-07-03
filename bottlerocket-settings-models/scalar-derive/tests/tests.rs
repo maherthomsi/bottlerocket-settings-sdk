@@ -21,7 +21,7 @@ fn simple_string() {
     let s = SimpleString::new("foo").unwrap();
     // Check that a few dereferencing conveniences compile
     let eq1 = "foo" == s;
-    let eq2 = String::from("foo") == s;
+    let eq2 = "foo" == s;
     let eq3 = "foo" == &s;
     // Assert these in a way that doesn't use assert_eq and doesn't make my IDE mad
     assert!(eq1);
@@ -43,7 +43,7 @@ impl Validate for UnnamedFields {
         let input = input.into();
         // Contrived weirdness
         if input == 0 {
-            return Err(ValidationError::new("never zero"));
+            Err(ValidationError::new("never zero"))
         } else if input == 1 {
             Ok(Self(2, "it was 1 but I changed it to 2".to_string()))
         } else {
@@ -56,7 +56,7 @@ impl Validate for UnnamedFields {
 fn unnamed_fields() {
     let i = UnnamedFields::new(1u16).unwrap();
     let eq1 = 2u16 == i;
-    let eq2 = &2u16 == &i;
+    let eq2 = 2u16 == i;
     assert!(eq1);
     assert!(eq2);
 }
@@ -81,7 +81,7 @@ impl Validate for SecondField {
 fn second_field() {
     let i = SecondField::new(3u16).unwrap();
     let eq1 = 3u16 == i;
-    let eq2 = &3u16 == &i;
+    let eq2 = 3u16 == i;
     assert!(eq1);
     assert!(eq2);
 }
