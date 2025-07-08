@@ -774,7 +774,8 @@ mod test_kubernetes_cloud_provider {
 
     #[test]
     fn disallowed_providers() {
-        for err in &["internal"] {
+        {
+            let err = &"internal";
             KubernetesCloudProvider::try_from(*err).unwrap_err();
         }
     }
@@ -1088,15 +1089,14 @@ impl<'de> Deserialize<'de> for IntegerPercent {
             Value::String(s) => (s.clone(), IntegerPercentMode::String),
             _ => {
                 return Err(D::Error::custom(format!(
-                    "Unable to deserialize value, it is not a number or a string: {:?}",
-                    json_value,
+                    "Unable to deserialize value, it is not a number or a string: {json_value:?}",
                 )))
             }
         };
 
         let value = s
             .parse::<i32>()
-            .map_err(|e| D::Error::custom(format!("Unable to parse {} as an integer: {}", s, e)))?;
+            .map_err(|e| D::Error::custom(format!("Unable to parse {s} as an integer: {e}")))?;
 
         // This new function will clamp the range to 0..100 with a nice error message.
         Self::new(value, mode).map_err(|e| D::Error::custom(e.to_string()))
@@ -1345,7 +1345,8 @@ mod test_kubernetes_cpu_manager_policy_option {
 
     #[test]
     fn good_cpu_manager_policy_option() {
-        for ok in &["full-pcpus-only"] {
+        {
+            let ok = &"full-pcpus-only";
             KubernetesCPUManagerPolicyOption::try_from(*ok).unwrap();
         }
     }
@@ -1643,7 +1644,7 @@ mod test_nvidia_device_plugins {
         device_list_strategy: Option<NvidiaDeviceListStrategy>,
     ) -> NvidiaDevicePluginSettings {
         NvidiaDevicePluginSettings {
-            device_list_strategy: device_list_strategy,
+            device_list_strategy,
             ..NvidiaDevicePluginSettings::default()
         }
     }

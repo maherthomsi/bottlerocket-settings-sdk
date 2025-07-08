@@ -26,7 +26,7 @@ pub fn run_extension<P: Proto1>(extension: P, cmd: Proto1Command) -> ExitCode {
             ExitCode::SUCCESS
         }
         Err(e) => {
-            println!("{}", e);
+            println!("{e}");
             ExitCode::FAILURE
         }
     }

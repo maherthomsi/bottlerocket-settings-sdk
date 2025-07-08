@@ -97,11 +97,11 @@ mod test {
 
         assert_eq!(mirrors.len(), 1);
         assert_eq!(
-            mirrors[0].registry.clone().unwrap(),
+            mirrors.first().unwrap().registry.clone().unwrap(),
             SingleLineString::try_from("foo").unwrap(),
         );
         assert_eq!(
-            mirrors[0].endpoint.clone().unwrap(),
+            mirrors.first().unwrap().endpoint.clone().unwrap(),
             vec!(Url::try_from("https://example.net").unwrap()),
         );
     }
@@ -115,15 +115,15 @@ mod test {
 
         assert_eq!(credentials.len(), 1);
         assert_eq!(
-            credentials[0].registry.clone().unwrap(),
+            credentials.first().unwrap().registry.clone().unwrap(),
             SingleLineString::try_from("foo").unwrap(),
         );
         assert_eq!(
-            credentials[0].auth.clone().unwrap(),
+            credentials.first().unwrap().auth.clone().unwrap(),
             ValidBase64::try_from("Ym90dGxlcm9ja2V0").unwrap(),
         );
-        assert!(credentials[0].username.is_none());
-        assert!(credentials[0].password.is_none());
-        assert!(credentials[0].identitytoken.is_none());
+        assert!(credentials.first().unwrap().username.is_none());
+        assert!(credentials.first().unwrap().password.is_none());
+        assert!(credentials.first().unwrap().identitytoken.is_none());
     }
 }

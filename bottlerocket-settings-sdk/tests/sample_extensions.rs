@@ -34,7 +34,7 @@ mod helpers {
         Mo: AsTypeErasedModel,
     {
         extension
-            .try_run_with_args(&[
+            .try_run_with_args([
                 "extension",
                 "proto1",
                 "set",
@@ -46,7 +46,6 @@ mod helpers {
             .context("Failed to run settings extension CLI")
             .map(|s| {
                 assert!(s.is_empty());
-                ()
             })
     }
 
@@ -129,7 +128,6 @@ mod helpers {
             .context("Failed to run settings extension CLI")
             .map(|s| {
                 assert!(s.is_empty());
-                ()
             })
     }
 
@@ -207,8 +205,7 @@ mod helpers {
     {
         let template_args: Vec<String> = args
             .into_iter()
-            .map(|arg| vec!["--arg".to_string(), arg.to_string()])
-            .flatten()
+            .flat_map(|arg| vec!["--arg".to_string(), arg.to_string()])
             .collect();
 
         let args = [

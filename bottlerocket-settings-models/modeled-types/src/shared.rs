@@ -460,7 +460,7 @@ impl TryFrom<&str> for Url {
         } else {
             // It's very common to specify URLs without a scheme, so we add one and see if that
             // fixes parsing.
-            let prefixed = format!("http://{}", input);
+            let prefixed = format!("http://{input}");
             if prefixed.parse::<url::Url>().is_ok() {
                 return Ok(Url {
                     inner: input.to_string(),
@@ -968,8 +968,7 @@ impl<'de> serde::Deserialize<'de> for ApiclientCommand {
         let original: Vec<String> = serde::Deserialize::deserialize(deserializer)?;
         Self::try_from(original).map_err(|e| {
             <D::Error as serde::de::Error>::custom(format!(
-                "Unable to deserialize into ApiclientCommand: {}",
-                e
+                "Unable to deserialize into ApiclientCommand: {e}"
             ))
         })
     }

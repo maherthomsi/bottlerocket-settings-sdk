@@ -40,7 +40,7 @@ impl SettingsModel for MotdV1 {
     ) -> Result<GenerateResult<Self::PartialKind, Self>> {
         // We generate a default motd if there is none.
         Ok(GenerateResult::Complete(
-            existing_partial.unwrap_or(MotdV1::default()),
+            existing_partial.unwrap_or_default(),
         ))
     }
 
