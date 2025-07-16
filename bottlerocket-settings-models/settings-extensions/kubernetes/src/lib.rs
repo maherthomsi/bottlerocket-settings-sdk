@@ -85,22 +85,17 @@ pub struct KubernetesSettingsV1 {
     memory_manager_policy: KubernetesMemoryManagerPolicy,
     reserved_cpus: KernelCpuSetValue,
     memory_swap_behavior: KubernetesMemorySwapBehavior,
-
-    // Settings where we generate a value based on the runtime environment.  The user can specify a
-    // value to override the generated one, but typically would not.
+    hostname_override_source: KubernetesHostnameOverrideSource,
+    seccomp_default: bool,
+    device_ownership_from_security_context: bool,
+    single_process_oom_kill: bool,
+    static_pods_enabled: bool,
     max_pods: u32,
     cluster_dns_ip: KubernetesClusterDnsIp,
     cluster_domain: DNSDomain,
     node_ip: IpAddr,
     pod_infra_container_image: SingleLineString,
-    // Generated in `aws-k8s-1.26*` variants only
     hostname_override: ValidLinuxHostname,
-    hostname_override_source: KubernetesHostnameOverrideSource,
-    // Generated in `k8s-1.25+` variants only
-    seccomp_default: bool,
-    device_ownership_from_security_context: bool,
-    // Generated in `k8s-1.32+` variants only
-    single_process_oom_kill: bool,
 }
 
 type Result<T> = std::result::Result<T, Infallible>;
@@ -203,6 +198,7 @@ mod test {
                 seccomp_default: None,
                 device_ownership_from_security_context: None,
                 single_process_oom_kill: None,
+                static_pods_enabled: None,
             })
         );
     }
