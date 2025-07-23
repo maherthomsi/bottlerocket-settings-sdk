@@ -26,6 +26,7 @@ members = [
     "bottlerocket-settings-models/settings-extensions/cloudformation",
     "bottlerocket-settings-models/settings-extensions/container-registry",
     "bottlerocket-settings-models/settings-extensions/container-runtime",
+    "bottlerocket-settings-models/settings-extensions/container-runtime-plugins",
     "bottlerocket-settings-models/settings-extensions/dns",
     "bottlerocket-settings-models/settings-extensions/ecs",
     "bottlerocket-settings-models/settings-extensions/host-containers",
@@ -69,7 +70,8 @@ settings-extension-bootstrap-commands = { path = "./bottlerocket-settings-models
 settings-extension-bootstrap-containers = { path = "./bottlerocket-settings-models/settings-extensions/bootstrap-containers", version = "0.1" }
 settings-extension-cloudformation = { path = "./bottlerocket-settings-models/settings-extensions/cloudformation", version = "0.1" }
 settings-extension-container-registry = { path = "./bottlerocket-settings-models/settings-extensions/container-registry", version = "0.1" }
-settings-extension-container-runtime = { path = "./bottlerocket-settings-models/settings-extensions/container-runtime", version = "0.1" }
+settings-extension-container-runtime = { path = "./bottlerocket-settings-models/settings-extensions/container-runtime", version = "0.2" }
+settings-extension-container-runtime-plugins = { path = "./bottlerocket-settings-models/settings-extensions/container-runtime-plugins", version = "0.1" }
 settings-extension-dns = { path = "./bottlerocket-settings-models/settings-extensions/dns", version = "0.1" }
 settings-extension-ecs = { path = "./bottlerocket-settings-models/settings-extensions/ecs", version = "0.1" }
 settings-extension-host-containers = { path = "./bottlerocket-settings-models/settings-extensions/host-containers", version = "0.1" }
@@ -91,6 +93,7 @@ anyhow = "1"
 argh = "0.1"
 base64 = "0.22"
 bounded-integer = "0.5"
+byte-unit = "5.1"
 ctor = "0.2"
 darling = "0.20"
 env_logger = "0.11"

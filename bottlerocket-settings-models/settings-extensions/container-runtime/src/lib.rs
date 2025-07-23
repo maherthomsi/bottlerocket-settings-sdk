@@ -1,6 +1,7 @@
 //! Settings related to Container Runtime
 use bottlerocket_model_derive::model;
 use bottlerocket_settings_sdk::{GenerateResult, SettingsModel};
+use serde::{Deserialize, Serialize};
 use std::convert::Infallible;
 
 #[model(impl_default = true)]
@@ -9,6 +10,15 @@ pub struct ContainerRuntimeSettingsV1 {
     max_concurrent_downloads: i32,
     enable_unprivileged_ports: bool,
     enable_unprivileged_icmp: bool,
+    snapshotter: Snapshotter,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, Default)]
+#[serde(rename_all = "kebab-case")]
+enum Snapshotter {
+    #[default]
+    Overlayfs,
+    Soci,
 }
 
 type Result<T> = std::result::Result<T, Infallible>;
@@ -55,6 +65,7 @@ mod test {
                 max_concurrent_downloads: None,
                 enable_unprivileged_ports: None,
                 enable_unprivileged_icmp: None,
+                snapshotter: None,
             }))
         )
     }
@@ -65,7 +76,8 @@ mod test {
             "max-container-log-line-size": 1024,
             "max-concurrent-downloads": 5,
             "enable-unprivileged-ports": true,
-            "enable-unprivileged-icmp": false
+            "enable-unprivileged-icmp": false,
+            "snapshotter": "soci",
         });
 
         let test_json_str = test_json.to_string();
@@ -80,6 +92,7 @@ mod test {
                 max_concurrent_downloads: Some(5),
                 enable_unprivileged_ports: Some(true),
                 enable_unprivileged_icmp: Some(false),
+                snapshotter: Some(Snapshotter::Soci),
             }
         );
 

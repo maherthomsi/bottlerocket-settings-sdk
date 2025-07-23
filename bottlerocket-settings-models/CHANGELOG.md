@@ -9,7 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.11.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.12.0...HEAD
+
+## [0.12.0] - 2025-07-23
+
+## Model Changes
+
+### Added
+
+- Added `container-runtime-plugins` settings extension with SOCI snapshotter configuration support ([#91])
+- Added `snapshotter` setting to `container-runtime` settings extension ([#91])
+
+[#91]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/91
+[0.12.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.11.0...bottlerocket-settings-models-v0.12.0
 
 ## [0.11.0] - 2025-06-13
 

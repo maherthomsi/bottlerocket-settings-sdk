@@ -1,6 +1,6 @@
 [package]
 name = "bottlerocket-settings-models"
-version = "0.11.0"
+version = "0.12.0"
 authors = ["Tom Kirchner <tjk@amazon.com>"]
 license = "Apache-2.0 OR MIT"
 edition = "2021"
@@ -29,6 +29,7 @@ settings-extension-bootstrap-containers.workspace = true
 settings-extension-cloudformation.workspace = true
 settings-extension-container-registry.workspace = true
 settings-extension-container-runtime.workspace = true
+settings-extension-container-runtime-plugins.workspace = true
 settings-extension-dns.workspace = true
 settings-extension-ecs.workspace = true
 settings-extension-host-containers.workspace = true
