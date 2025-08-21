@@ -2,19 +2,25 @@
 //! into the Bottlerocket control container.
 use bottlerocket_settings_sdk::{GenerateResult, LinearlyMigrateable, NoMigration, SettingsModel};
 use bottlerocket_string_impls_for::string_impls_for;
-use std::convert::Infallible;
+use snafu::Snafu;
+
+#[derive(Debug, Snafu, PartialEq)]
+pub enum MotdError {
+    #[snafu(display("MOTD cannot exceed 64KB, got {} bytes", size))]
+    TooLarge { size: usize },
+}
 
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct MotdV1 {
     inner: String,
 }
 
-type Result<T> = std::result::Result<T, Infallible>;
+type Result<T> = std::result::Result<T, MotdError>;
 
 impl SettingsModel for MotdV1 {
     /// We only have one value, so there's no such thing as a partial
     type PartialKind = Self;
-    type ErrorKind = Infallible;
+    type ErrorKind = MotdError;
 
     fn get_version() -> &'static str {
         "v1"
@@ -54,9 +60,12 @@ impl LinearlyMigrateable for MotdV1 {
 }
 
 impl TryFrom<&str> for MotdV1 {
-    type Error = Infallible;
+    type Error = MotdError;
 
     fn try_from(input: &str) -> Result<Self> {
+        if input.len() > 65536 {
+            return Err(MotdError::TooLarge { size: input.len() });
+        }
         Ok(MotdV1 {
             inner: input.to_string(),
         })

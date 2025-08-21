@@ -12,6 +12,7 @@ bottlerocket-string-impls-for.workspace = true
 env_logger.workspace = true
 serde = { workspace = true, features = ["derive"] }
 serde_json.workspace = true
+snafu.workspace = true
 
 [lints]
 workspace = true
