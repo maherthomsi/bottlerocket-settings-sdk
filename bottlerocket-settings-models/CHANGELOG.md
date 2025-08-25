@@ -9,7 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.12.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.13.0...HEAD
+
+## [0.13.0] - 2025-08-25
+
+## Model Changes
+
+### Added
+
+- Added `static_pods_enabled` settings extension for kubernetes pods ([#93])
+
+[#93]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/93
+[0.13.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.12.0...bottlerocket-settings-models-v0.13.0
 
 ## [0.12.0] - 2025-07-23
 
