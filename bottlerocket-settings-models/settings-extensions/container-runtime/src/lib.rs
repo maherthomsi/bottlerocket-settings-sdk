@@ -1,5 +1,6 @@
 //! Settings related to Container Runtime
 use bottlerocket_model_derive::model;
+use bottlerocket_modeled_types::deserialize_optional_chunk_size;
 use bottlerocket_settings_sdk::{GenerateResult, SettingsModel};
 use serde::{Deserialize, Serialize};
 use std::convert::Infallible;
@@ -8,6 +9,11 @@ use std::convert::Infallible;
 pub struct ContainerRuntimeSettingsV1 {
     max_container_log_line_size: i32,
     max_concurrent_downloads: i32,
+    #[serde(
+        alias = "concurrent-layer-fetch-buffer",
+        deserialize_with = "deserialize_optional_chunk_size"
+    )]
+    concurrent_download_chunk_size: i64,
     enable_unprivileged_ports: bool,
     enable_unprivileged_icmp: bool,
     snapshotter: Snapshotter,
@@ -63,6 +69,7 @@ mod test {
             Ok(GenerateResult::Complete(ContainerRuntimeSettingsV1 {
                 max_container_log_line_size: None,
                 max_concurrent_downloads: None,
+                concurrent_download_chunk_size: None,
                 enable_unprivileged_ports: None,
                 enable_unprivileged_icmp: None,
                 snapshotter: None,
@@ -75,6 +82,7 @@ mod test {
         let test_json = json!({
             "max-container-log-line-size": 1024,
             "max-concurrent-downloads": 5,
+            "concurrent-download-chunk-size": "64mb",
             "enable-unprivileged-ports": true,
             "enable-unprivileged-icmp": false,
             "snapshotter": "soci",
@@ -90,6 +98,7 @@ mod test {
             ContainerRuntimeSettingsV1 {
                 max_container_log_line_size: Some(1024),
                 max_concurrent_downloads: Some(5),
+                concurrent_download_chunk_size: Some(64000000), // 64mb in bytes
                 enable_unprivileged_ports: Some(true),
                 enable_unprivileged_icmp: Some(false),
                 snapshotter: Some(Snapshotter::Soci),
@@ -100,6 +109,42 @@ mod test {
             .map(|s| serde_json::from_str(&s).unwrap())
             .unwrap();
 
-        assert_eq!(serialized_json, test_json);
+        let expected_json = json!({
+            "max-container-log-line-size": 1024,
+            "max-concurrent-downloads": 5,
+            "concurrent-download-chunk-size": 64000000, // Serialized as number
+            "enable-unprivileged-ports": true,
+            "enable-unprivileged-icmp": false,
+            "snapshotter": "soci",
+        });
+
+        assert_eq!(serialized_json, expected_json);
+    }
+
+    #[test]
+    fn test_serde_container_runtime_alias() {
+        let test_json = json!({
+            "max-container-log-line-size": 2048,
+            "max-concurrent-downloads": 10,
+            "concurrent-layer-fetch-buffer": "128mb",
+            "enable-unprivileged-ports": false,
+            "enable-unprivileged-icmp": true,
+            "snapshotter": "overlayfs",
+        });
+
+        let container_runtime_settings: ContainerRuntimeSettingsV1 =
+            serde_json::from_str(&test_json.to_string()).unwrap();
+
+        assert_eq!(
+            container_runtime_settings,
+            ContainerRuntimeSettingsV1 {
+                max_container_log_line_size: Some(2048),
+                max_concurrent_downloads: Some(10),
+                concurrent_download_chunk_size: Some(128000000), // 128mb in bytes
+                enable_unprivileged_ports: Some(false),
+                enable_unprivileged_icmp: Some(true),
+                snapshotter: Some(Snapshotter::Overlayfs),
+            }
+        );
     }
 }
