@@ -4,10 +4,11 @@ use bottlerocket_scalar::traits::{Scalar, Validate};
 use bottlerocket_scalar::ValidationError;
 use bottlerocket_scalar_derive::Scalar;
 use bottlerocket_string_impls_for::string_impls_for;
+use byte_unit::Byte;
 use lazy_static::lazy_static;
 use regex::Regex;
 use semver::Version;
-use serde::{Deserialize, Serialize};
+use serde::{de::IntoDeserializer, Deserialize, Deserializer, Serialize};
 use snafu::{ensure, ResultExt};
 use std::convert::TryFrom;
 use std::net::IpAddr;
@@ -1325,5 +1326,84 @@ mod test_kernel_cpu_set_value {
         ] {
             KernelCpuSetValue::try_from(*err).unwrap_err();
         }
+    }
+}
+// =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=
+
+/// Deserializes a size string (e.g., "64mb") or integer into an i64 value representing bytes.
+pub fn deserialize_chunk_size<'de, D>(deserializer: D) -> Result<i64, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    #[derive(Deserialize)]
+    #[serde(untagged)]
+    enum StringOrInt {
+        String(String),
+        Int(i64),
+    }
+
+    let value = StringOrInt::deserialize(deserializer)?;
+
+    match value {
+        StringOrInt::String(s) => {
+            let s = s.trim();
+
+            // Try parsing as a plain integer (bytes)
+            if let Ok(bytes) = s.parse::<i64>() {
+                if bytes < 0 {
+                    return Err(serde::de::Error::custom(format!(
+                        "Size cannot be negative: {s}"
+                    )));
+                }
+                return Ok(bytes);
+            }
+
+            if s.contains(char::is_whitespace) {
+                return Err(serde::de::Error::custom(format!(
+                    "Size string cannot contain whitespace: '{s}'"
+                )));
+            }
+
+            // Handle the special case of ".5gb" format (byte_unit expects "0.5gb")
+            let normalized_s = if s.starts_with('.') {
+                format!("0{s}")
+            } else {
+                s.to_string()
+            };
+
+            // Try parsing as a size string with units using byte_unit, ignoring case.
+            match Byte::parse_str(&normalized_s, true) {
+                Ok(byte) => {
+                    // Convert to i64, ensuring we don't overflow
+                    let bytes = byte.as_u64();
+                    i64::try_from(bytes).map_err(|e| {
+                        serde::de::Error::custom(format!("Unable to convert bytes u64 to i64: {e}"))
+                    })
+                }
+                Err(e) => Err(serde::de::Error::custom(format!(
+                    "Invalid size string format '{s}': {e}"
+                ))),
+            }
+        }
+        StringOrInt::Int(i) => {
+            if i < 0 {
+                return Err(serde::de::Error::custom(format!(
+                    "Size cannot be negative: {i}"
+                )));
+            }
+            Ok(i)
+        }
+    }
+}
+/// Deserializes an optional size string or integer into Option<i64> for model fields
+pub fn deserialize_optional_chunk_size<'de, D>(deserializer: D) -> Result<Option<i64>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    match Option::<serde_json::Value>::deserialize(deserializer)? {
+        None => Ok(None),
+        Some(v) => deserialize_chunk_size(v.into_deserializer())
+            .map(Some)
+            .map_err(serde::de::Error::custom),
     }
 }

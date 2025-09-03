@@ -1,8 +1,7 @@
 //! Settings related to Container Runtime Plugins
-mod de;
 
-use crate::de::deserialize_chunk_size;
 use bottlerocket_model_derive::model;
+use bottlerocket_modeled_types::deserialize_chunk_size;
 use bottlerocket_settings_sdk::{GenerateResult, SettingsModel};
 use serde::{Deserialize, Serialize};
 use std::convert::Infallible;
