@@ -16,6 +16,7 @@ on:
 
 jobs:
   build:
+    if: github.repository == 'bottlerocket-os/bottlerocket-settings-sdk'
     runs-on:
       group: bottlerocket
       labels: bottlerocket_ubuntu-latest_8-core
