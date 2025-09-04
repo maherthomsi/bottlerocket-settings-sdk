@@ -9,7 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.13.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.14.0...HEAD
+
+## [0.14.0] - 2025-09-04
+
+## Model Changes
+
+### Added
+
+- Added `concurrent-download-chunk-size` setting to `container-runtime` setting extension ([#99])
+- Added `command` setting to `host-containers` and `bootstrap-containers` setting extensions ([#100]) - Thanks @kasimeka!
+
+[#99]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/99
+[#100]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/100
+
+[0.14.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.13.0...bottlerocket-settings-models-v0.14.0
 
 ## [0.13.0] - 2025-08-25
 
