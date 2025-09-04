@@ -1,6 +1,6 @@
 //! host-containers settings allow users to configure multiple host containers
 use bottlerocket_model_derive::model;
-use bottlerocket_modeled_types::{Identifier, Url, ValidBase64};
+use bottlerocket_modeled_types::{Identifier, SingleLineString, Url, ValidBase64};
 use bottlerocket_settings_sdk::{GenerateResult, SettingsModel};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::collections::HashMap;
@@ -38,6 +38,7 @@ struct HostContainer {
     enabled: bool,
     superpowered: bool,
     user_data: ValidBase64,
+    command: Vec<SingleLineString>,
 }
 
 type Result<T> = std::result::Result<T, Infallible>;
@@ -93,7 +94,8 @@ mod test {
                 "source": "public.ecr.aws/example/example",
                 "enabled": true,
                 "superpowered": true,
-                "user-data": "Zm9vCg=="
+                "user-data": "Zm9vCg==",
+                "command": ["echo", "hello"]
             }
         }"#;
 
@@ -107,6 +109,10 @@ mod test {
                 enabled: Some(true),
                 superpowered: Some(true),
                 user_data: Some(ValidBase64::try_from("Zm9vCg==").unwrap()),
+                command: Some(vec![
+                    SingleLineString::try_from("echo").unwrap(),
+                    SingleLineString::try_from("hello").unwrap(),
+                ]),
             },
         );
 

@@ -1,6 +1,6 @@
 //! Settings related to bootstrap containers.
 use bottlerocket_model_derive::model;
-use bottlerocket_modeled_types::{BootstrapMode, Identifier, Url, ValidBase64};
+use bottlerocket_modeled_types::{BootstrapMode, Identifier, SingleLineString, Url, ValidBase64};
 use bottlerocket_settings_sdk::{GenerateResult, SettingsModel};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::{collections::HashMap, convert::Infallible};
@@ -39,6 +39,7 @@ struct BootstrapContainer {
     mode: BootstrapMode,
     user_data: ValidBase64,
     essential: bool,
+    command: Vec<SingleLineString>,
 }
 
 type Result<T> = std::result::Result<T, Infallible>;
@@ -96,6 +97,7 @@ mod test {
                 "mode": "once",
                 "user-data": "dXNlcmRhdGE=",
                 "essential": true,
+                "command": ["echo", "hello"],
             }
         });
 
@@ -118,6 +120,10 @@ mod test {
                 mode: Some(BootstrapMode::try_from("once").unwrap()),
                 user_data: Some(ValidBase64::try_from("dXNlcmRhdGE=").unwrap()),
                 essential: Some(true),
+                command: Some(vec![
+                    SingleLineString::try_from("echo").unwrap(),
+                    SingleLineString::try_from("hello").unwrap(),
+                ]),
             },
         );
 
