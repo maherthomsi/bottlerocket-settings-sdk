@@ -11,6 +11,8 @@ pub struct ContainerRuntimeSettingsV1 {
     max_concurrent_downloads: i32,
     #[serde(
         alias = "concurrent-layer-fetch-buffer",
+        default,
+        skip_serializing_if = "Option::is_none",
         deserialize_with = "deserialize_optional_chunk_size"
     )]
     concurrent_download_chunk_size: i64,
@@ -145,6 +147,21 @@ mod test {
                 enable_unprivileged_icmp: Some(true),
                 snapshotter: Some(Snapshotter::Overlayfs),
             }
+        );
+    }
+
+    #[test]
+    fn test_optional_concurrent_download_chunk_size() {
+        let test_json = json!({
+            "snapshotter": "overlayfs",
+        });
+
+        let container_runtime_settings: ContainerRuntimeSettingsV1 =
+            serde_json::from_str(&test_json.to_string()).unwrap();
+
+        assert_eq!(
+            container_runtime_settings.concurrent_download_chunk_size,
+            None
         );
     }
 }

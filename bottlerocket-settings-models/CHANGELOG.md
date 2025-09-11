@@ -9,7 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.14.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.15.0...HEAD
+
+## [0.15.0] - 2025-09-11
+
+## Model Changes
+
+### Fixed
+
+- Fixed `concurrent-download-chunk-size` in `container-runtime` being optional during deserialization ([#102])
+
+[#102]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/102
+
+[0.15.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.14.0...bottlerocket-settings-models-v0.15.0
 
 ## [0.14.0] - 2025-09-04
 
