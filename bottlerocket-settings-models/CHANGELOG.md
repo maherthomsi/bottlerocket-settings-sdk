@@ -9,7 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.15.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.16.0...HEAD
+
+## [0.16.0] - 2025-09-19
+
+## Model Changes
+
+### Added
+
+- Added `pid` setting to the `kube-reserved` and `system-reserved` kubernetes settings ([#98])
+
+[#98]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/98
+
+[0.16.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.15.0...bottlerocket-settings-models-v0.16.0
 
 ## [0.15.0] - 2025-09-11
 
