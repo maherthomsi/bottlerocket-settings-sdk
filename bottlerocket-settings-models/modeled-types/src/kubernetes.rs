@@ -628,6 +628,7 @@ enum ReservedResources {
     Memory,
     #[serde(rename = "ephemeral-storage")]
     EphemeralStorage,
+    Pid,
 }
 
 impl TryFrom<&str> for KubernetesReservedResourceKey {
@@ -656,7 +657,7 @@ mod test_reserved_resources_key {
 
     #[test]
     fn good_reserved_resources_key() {
-        for ok in &["cpu", "memory", "ephemeral-storage"] {
+        for ok in &["cpu", "memory", "ephemeral-storage", "pid"] {
             KubernetesReservedResourceKey::try_from(*ok).unwrap();
         }
     }

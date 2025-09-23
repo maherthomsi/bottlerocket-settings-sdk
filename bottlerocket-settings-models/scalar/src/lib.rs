@@ -185,7 +185,7 @@ impl Display for ValidationError {
 impl Error for ValidationError {
     /// Return the underlying error if there is one.
     fn source(&self) -> Option<&(dyn Error + 'static)> {
-        self.source.as_ref().map(|e| e.as_ref() as &(dyn Error))
+        self.source.as_ref().map(|e| e.as_ref() as &dyn Error)
     }
 }
 
