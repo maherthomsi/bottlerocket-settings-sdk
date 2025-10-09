@@ -9,7 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.16.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.17.0...HEAD
+
+## [0.17.0] - 2025-11-05
+
+## Model Changes
+
+### Added
+
+- Added `image-minimum-gc-age` and `image-maximum-gc-age` kubernetes settings ([#87]) - Thanks @parnniti!
+- Added `ids-per-pod` and `max-parallel-image-pulls` kubernetes settings ([#104])
+- Added beta options for `cpu-manager-policy-options` kubernetes settings ([#104])
+
+[#87]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/87
+[#104]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/104
+
+[0.17.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.16.0...bottlerocket-settings-models-v0.17.0
 
 ## [0.16.0] - 2025-09-19
 
