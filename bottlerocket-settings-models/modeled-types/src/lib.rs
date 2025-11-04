@@ -159,6 +159,9 @@ pub mod error {
 
         #[snafu(display("Invalid memory swap behavior value '{}'", input))]
         InvalidMemorySwapBehavior { input: String },
+
+        #[snafu(display("Invalid Kubernetes IDs per pod value '{}'", input))]
+        InvalidKubernetesIdsPerPodValue { input: i64 },
     }
 
     /// Creates a `ValidationError` with a consistent message for strings with regex validations
