@@ -1337,6 +1337,12 @@ pub struct CredentialProvider {
 pub enum KubernetesCPUManagerPolicyOption {
     #[serde(rename = "full-pcpus-only")]
     FullPCPUsOnly,
+    #[serde(rename = "distribute-cpus-across-numa")]
+    DistributeCPUsAcrossNUMA,
+    #[serde(rename = "prefer-align-cpus-by-uncorecache")]
+    PreferAlignCPUsByUncorecache,
+    #[serde(rename = "strict-cpu-reservation")]
+    StrictCPUReservation,
 }
 
 #[cfg(test)]
@@ -1346,8 +1352,12 @@ mod test_kubernetes_cpu_manager_policy_option {
 
     #[test]
     fn good_cpu_manager_policy_option() {
-        {
-            let ok = &"full-pcpus-only";
+        for ok in &[
+            "full-pcpus-only",
+            "distribute-cpus-across-numa",
+            "prefer-align-cpus-by-uncorecache",
+            "strict-cpu-reservation",
+        ] {
             KubernetesCPUManagerPolicyOption::try_from(*ok).unwrap();
         }
     }
