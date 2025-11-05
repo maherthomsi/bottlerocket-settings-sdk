@@ -30,6 +30,7 @@ members = [
     "bottlerocket-settings-models/settings-extensions/dns",
     "bottlerocket-settings-models/settings-extensions/ecs",
     "bottlerocket-settings-models/settings-extensions/host-containers",
+    "bottlerocket-settings-models/settings-extensions/image-verifier-plugins",
     "bottlerocket-settings-models/settings-extensions/kernel",
     "bottlerocket-settings-models/settings-extensions/kubernetes",
     "bottlerocket-settings-models/settings-extensions/kubelet-device-plugins",
@@ -75,6 +76,7 @@ settings-extension-container-runtime-plugins = { path = "./bottlerocket-settings
 settings-extension-dns = { path = "./bottlerocket-settings-models/settings-extensions/dns", version = "0.1" }
 settings-extension-ecs = { path = "./bottlerocket-settings-models/settings-extensions/ecs", version = "0.1" }
 settings-extension-host-containers = { path = "./bottlerocket-settings-models/settings-extensions/host-containers", version = "0.2" }
+settings-extension-image-verifier-plugins = { path = "./bottlerocket-settings-models/settings-extensions/image-verifier-plugins", version = "0.1" }
 settings-extension-kernel = { path = "./bottlerocket-settings-models/settings-extensions/kernel", version = "0.1" }
 settings-extension-kubernetes = { path = "./bottlerocket-settings-models/settings-extensions/kubernetes", version = "0.6" }
 settings-extension-kubelet-device-plugins = { path = "./bottlerocket-settings-models/settings-extensions/kubelet-device-plugins", version = "0.3" }

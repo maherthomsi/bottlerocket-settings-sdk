@@ -33,6 +33,7 @@ settings-extension-container-runtime-plugins.workspace = true
 settings-extension-dns.workspace = true
 settings-extension-ecs.workspace = true
 settings-extension-host-containers.workspace = true
+settings-extension-image-verifier-plugins.workspace = true
 settings-extension-kernel.workspace = true
 settings-extension-kubernetes.workspace = true
 settings-extension-kubelet-device-plugins.workspace = true

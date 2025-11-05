@@ -36,6 +36,7 @@ pub use settings_extension_container_runtime_plugins::{self, ContainerRuntimePlu
 pub use settings_extension_dns::{self, DnsSettingsV1};
 pub use settings_extension_ecs::{self, ECSSettingsV1};
 pub use settings_extension_host_containers::{self, HostContainersSettingsV1};
+pub use settings_extension_image_verifier_plugins::{self, ImageVerifierPluginsSettingsV1};
 pub use settings_extension_kernel::{self, KernelSettingsV1};
 pub use settings_extension_kubelet_device_plugins::{self, KubeletDevicePluginsV1};
 pub use settings_extension_kubernetes::{self, KubernetesSettingsV1};
