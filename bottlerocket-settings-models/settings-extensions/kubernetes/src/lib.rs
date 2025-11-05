@@ -5,11 +5,11 @@ use bottlerocket_modeled_types::{
     KubernetesAuthenticationMode, KubernetesBootstrapToken, KubernetesCPUManagerPolicyOption,
     KubernetesCloudProvider, KubernetesClusterDnsIp, KubernetesClusterName,
     KubernetesDurationValue, KubernetesEvictionKey, KubernetesHostnameOverrideSource,
-    KubernetesLabelKey, KubernetesLabelValue, KubernetesMemoryManagerPolicy,
-    KubernetesMemoryReservation, KubernetesMemorySwapBehavior, KubernetesQuantityValue,
-    KubernetesReservedResourceKey, KubernetesTaintValue, KubernetesThresholdValue,
-    NonNegativeInteger, SingleLineString, TopologyManagerPolicy, TopologyManagerScope, Url,
-    ValidBase64, ValidLinuxHostname,
+    KubernetesIdsPerPodValue, KubernetesLabelKey, KubernetesLabelValue,
+    KubernetesMemoryManagerPolicy, KubernetesMemoryReservation, KubernetesMemorySwapBehavior,
+    KubernetesQuantityValue, KubernetesReservedResourceKey, KubernetesTaintValue,
+    KubernetesThresholdValue, NonNegativeInteger, SingleLineString, TopologyManagerPolicy,
+    TopologyManagerScope, Url, ValidBase64, ValidLinuxHostname,
 };
 use bottlerocket_settings_sdk::{GenerateResult, SettingsModel};
 
@@ -98,6 +98,8 @@ pub struct KubernetesSettingsV1 {
     node_ip: IpAddr,
     pod_infra_container_image: SingleLineString,
     hostname_override: ValidLinuxHostname,
+    ids_per_pod: KubernetesIdsPerPodValue,
+    max_parallel_image_pulls: i32,
 }
 
 type Result<T> = std::result::Result<T, Infallible>;
@@ -203,6 +205,8 @@ mod test {
                 device_ownership_from_security_context: None,
                 single_process_oom_kill: None,
                 static_pods_enabled: None,
+                ids_per_pod: None,
+                max_parallel_image_pulls: None,
             })
         );
     }

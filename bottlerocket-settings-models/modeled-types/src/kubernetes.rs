@@ -1337,6 +1337,12 @@ pub struct CredentialProvider {
 pub enum KubernetesCPUManagerPolicyOption {
     #[serde(rename = "full-pcpus-only")]
     FullPCPUsOnly,
+    #[serde(rename = "distribute-cpus-across-numa")]
+    DistributeCPUsAcrossNUMA,
+    #[serde(rename = "prefer-align-cpus-by-uncorecache")]
+    PreferAlignCPUsByUncorecache,
+    #[serde(rename = "strict-cpu-reservation")]
+    StrictCPUReservation,
 }
 
 #[cfg(test)]
@@ -1346,8 +1352,12 @@ mod test_kubernetes_cpu_manager_policy_option {
 
     #[test]
     fn good_cpu_manager_policy_option() {
-        {
-            let ok = &"full-pcpus-only";
+        for ok in &[
+            "full-pcpus-only",
+            "distribute-cpus-across-numa",
+            "prefer-align-cpus-by-uncorecache",
+            "strict-cpu-reservation",
+        ] {
             KubernetesCPUManagerPolicyOption::try_from(*ok).unwrap();
         }
     }
@@ -1486,6 +1496,55 @@ mod test_kubernetes_memory_swap_behavior {
     fn bad_swap_behavior() {
         for err in &["", "bad", "100", &"a".repeat(64)] {
             KubernetesMemorySwapBehavior::try_from(*err).unwrap_err();
+        }
+    }
+}
+
+// =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=
+
+/// KubernetesIdsPerPodValue represents an integer that contains a valid Kubernetes idsPerPod value.
+/// Must be a multiple of 65536 and less than 1<<32. Upstream validation:
+/// https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/apis/config/validation/validation_linux.go
+#[derive(Debug, Clone, Eq, PartialEq, Hash, Serialize, Deserialize)]
+#[serde(try_from = "i64", into = "i64")]
+pub struct KubernetesIdsPerPodValue {
+    inner: i64,
+}
+
+impl TryFrom<i64> for KubernetesIdsPerPodValue {
+    type Error = error::Error;
+
+    fn try_from(input: i64) -> Result<Self, Self::Error> {
+        ensure!(
+            input % 65536 == 0 && input < (1i64 << 32),
+            error::InvalidKubernetesIdsPerPodValueSnafu { input }
+        );
+        Ok(KubernetesIdsPerPodValue { inner: input })
+    }
+}
+
+impl From<KubernetesIdsPerPodValue> for i64 {
+    fn from(val: KubernetesIdsPerPodValue) -> Self {
+        val.inner
+    }
+}
+
+#[cfg(test)]
+mod test_kubernetes_ids_per_pod_value {
+    use super::KubernetesIdsPerPodValue;
+    use std::convert::TryFrom;
+
+    #[test]
+    fn good_values() {
+        for ok in &[0, 65536, 131072, 196608, 4294901760] {
+            KubernetesIdsPerPodValue::try_from(*ok).unwrap();
+        }
+    }
+
+    #[test]
+    fn bad_values() {
+        for err in &[1, 65535, 65537, 4294967296] {
+            KubernetesIdsPerPodValue::try_from(*err).unwrap_err();
         }
     }
 }
