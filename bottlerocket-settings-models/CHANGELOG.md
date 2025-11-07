@@ -20,9 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `image-minimum-gc-age` and `image-maximum-gc-age` kubernetes settings ([#87]) - Thanks @parnniti!
 - Added `ids-per-pod` and `max-parallel-image-pulls` kubernetes settings ([#104])
 - Added beta options for `cpu-manager-policy-options` kubernetes settings ([#104])
+- Added `image-verifier-plugins` settings extension with initial support for notation trustpolicy document ([#106])
 
 [#87]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/87
 [#104]:https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/104
+[#106]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/106
 
 [0.17.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.16.0...bottlerocket-settings-models-v0.17.0
 
