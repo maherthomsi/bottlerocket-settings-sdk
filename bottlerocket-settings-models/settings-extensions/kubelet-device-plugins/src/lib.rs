@@ -20,7 +20,7 @@ impl SettingsModel for KubeletDevicePluginsV1 {
     }
 
     fn set(_current_value: Option<Self>, _target: Self) -> Result<()> {
-        // Set anything that can be parsed as ECSSettingsV1.
+        // Set anything that can be parsed as KubeletDevicePluginsV1.
         Ok(())
     }
 
@@ -45,7 +45,8 @@ mod test {
     use bottlerocket_modeled_types::{
         MigProfile, NvidiaDeviceIdStrategy, NvidiaDeviceListStrategy,
         NvidiaDeviceListStrategyValues, NvidiaDevicePartitioningStrategy,
-        NvidiaDeviceSharingStrategy, NvidiaGpuModel, NvidiaMigSettings, NvidiaTimeSlicingSettings,
+        NvidiaDeviceSharingStrategy, NvidiaGpuModel, NvidiaMigSettings, NvidiaMpsSettings,
+        NvidiaTimeSlicingSettings,
     };
     use bounded_integer::BoundedI32;
     use std::collections::HashMap;
@@ -60,8 +61,23 @@ mod test {
     }
 
     #[test]
+    fn test_serde_kubelet_device_plugins_with_mps() {
+        let test_json = r#"{"nvidia":{"pass-device-specs":true,"device-id-strategy":"index","device-list-strategy":"volume-mounts","device-sharing-strategy":"mps","mps":{"replicas":4},"device-partitioning-strategy":"none"}}"#;
+
+        let device_plugins: KubeletDevicePluginsV1 = serde_json::from_str(test_json).unwrap();
+        assert_eq!(
+            device_plugins
+                .nvidia
+                .as_ref()
+                .unwrap()
+                .device_sharing_strategy,
+            Some(NvidiaDeviceSharingStrategy::Mps)
+        );
+    }
+
+    #[test]
     fn test_serde_kubelet_device_plugins_vec() {
-        let test_json = r#"{"nvidia":{"pass-device-specs":true,"device-id-strategy":"index","device-list-strategy":["volume-mounts","envvar"],"device-sharing-strategy":"time-slicing","time-slicing":{"replicas":2,"rename-by-default":true,"fail-requests-greater-than-one":true},"device-partitioning-strategy":"mig","mig":{"profile":{"a100.40gb":"1g.5gb"}}}}"#;
+        let test_json = r#"{"nvidia":{"pass-device-specs":true,"device-id-strategy":"index","device-list-strategy":["volume-mounts","envvar"],"device-sharing-strategy":"time-slicing","time-slicing":{"replicas":2,"rename-by-default":true,"fail-requests-greater-than-one":true},"mps":{},"device-partitioning-strategy":"mig","mig":{"profile":{"a100.40gb":"1g.5gb"}}}}"#;
 
         let device_plugins: KubeletDevicePluginsV1 = serde_json::from_str(test_json).unwrap();
         assert_eq!(
@@ -80,6 +96,7 @@ mod test {
                         rename_by_default: Some(true),
                         fail_requests_greater_than_one: Some(true),
                     }),
+                    mps: Some(NvidiaMpsSettings::default()),
                     device_partitioning_strategy: Some(NvidiaDevicePartitioningStrategy::MIG),
                     mig: Some(NvidiaMigSettings {
                         profile: Some(HashMap::from([(
@@ -90,14 +107,13 @@ mod test {
                 })
             }
         );
-
-        let results = serde_json::to_string(&device_plugins).unwrap();
-        assert_eq!(results, test_json);
+        let serialized = serde_json::to_string(&device_plugins).unwrap();
+        assert_eq!(serialized, test_json);
     }
 
     #[test]
     fn test_serde_kubelet_device_plugins_scalar() {
-        let test_json = r#"{"nvidia":{"pass-device-specs":true,"device-id-strategy":"index","device-list-strategy":"volume-mounts","device-sharing-strategy":"time-slicing","time-slicing":{"replicas":2,"rename-by-default":true,"fail-requests-greater-than-one":true},"device-partitioning-strategy":"mig","mig":{"profile":{"a100.40gb":"1g.5gb"}}}}"#;
+        let test_json = r#"{"nvidia":{"pass-device-specs":true,"device-id-strategy":"index","device-list-strategy":"volume-mounts","device-sharing-strategy":"time-slicing","time-slicing":{"replicas":2,"rename-by-default":true,"fail-requests-greater-than-one":true},"mps":{},"device-partitioning-strategy":"mig","mig":{"profile":{"a100.40gb":"1g.5gb"}}}}"#;
 
         let device_plugins: KubeletDevicePluginsV1 = serde_json::from_str(test_json).unwrap();
         assert_eq!(
@@ -115,6 +131,7 @@ mod test {
                         rename_by_default: Some(true),
                         fail_requests_greater_than_one: Some(true),
                     }),
+                    mps: Some(NvidiaMpsSettings::default()),
                     device_partitioning_strategy: Some(NvidiaDevicePartitioningStrategy::MIG),
                     mig: Some(NvidiaMigSettings {
                         profile: Some(HashMap::from([(
@@ -125,8 +142,7 @@ mod test {
                 })
             }
         );
-
-        let results = serde_json::to_string(&device_plugins).unwrap();
-        assert_eq!(results, test_json);
+        let serialized = serde_json::to_string(&device_plugins).unwrap();
+        assert_eq!(serialized, test_json);
     }
 }
