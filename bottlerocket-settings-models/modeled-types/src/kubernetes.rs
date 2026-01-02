@@ -1640,7 +1640,7 @@ pub struct NvidiaGpuModel {
 }
 
 lazy_static! {
-    pub(crate) static ref NVIDIAGPU_NAME: Regex = Regex::new(r"^([a-z])(\d+)\.(\d+)gb$").unwrap();
+    pub(crate) static ref NVIDIAGPU_NAME: Regex = Regex::new(r"^([a-z0-9]+).(\d+)gb$").unwrap();
 }
 
 impl TryFrom<&str> for NvidiaGpuModel {
@@ -1711,7 +1711,13 @@ mod test_nvidia_device_plugins {
 
     #[test]
     fn valid_gpu_model() {
-        for ok in &["a100.40gb", "a100.80gb", "h100.80gb", "h100.141gb"] {
+        for ok in &[
+            "a100.40gb",
+            "a100.80gb",
+            "h100.80gb",
+            "h100.141gb",
+            "rtxpro6000.98gb",
+        ] {
             assert!(NvidiaGpuModel::try_from(*ok).is_ok());
         }
     }
