@@ -100,6 +100,8 @@ pub struct KubernetesSettingsV1 {
     hostname_override: ValidLinuxHostname,
     ids_per_pod: KubernetesIdsPerPodValue,
     max_parallel_image_pulls: i32,
+    #[serde(alias = "fail-cgroupv1")]
+    fail_cgroup_v1: bool,
 }
 
 type Result<T> = std::result::Result<T, Infallible>;
@@ -207,6 +209,7 @@ mod test {
                 static_pods_enabled: None,
                 ids_per_pod: None,
                 max_parallel_image_pulls: None,
+                fail_cgroup_v1: None,
             })
         );
     }
