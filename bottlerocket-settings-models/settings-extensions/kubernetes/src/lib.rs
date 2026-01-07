@@ -100,7 +100,7 @@ pub struct KubernetesSettingsV1 {
     hostname_override: ValidLinuxHostname,
     ids_per_pod: KubernetesIdsPerPodValue,
     max_parallel_image_pulls: i32,
-    #[serde(alias = "fail-cgroupv1")]
+    #[serde(alias = "fail-cgroupv1", skip_serializing_if = "Option::is_none")]
     fail_cgroup_v1: bool,
 }
 
@@ -212,6 +212,13 @@ mod test {
                 fail_cgroup_v1: None,
             })
         );
+    }
+
+    #[test]
+    fn test_kubernetes_default_serialization() {
+        let k8s = KubernetesSettingsV1::default();
+        let serialized = serde_json::to_value(&k8s).expect("failed to serialize");
+        assert_eq!(serialized, serde_json::json!({}));
     }
 
     #[test]

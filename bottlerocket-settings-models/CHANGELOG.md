@@ -9,7 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.18.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.19.0...HEAD
+
+## [0.19.0] - 2026-01-07
+
+## Model Changes
+
+### Fixed
+
+- Fixed `fail-cgroup-v1` kubernetes setting serialization to skip when None ([#110])
+
+[#110]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/110
+
+[0.19.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.18.0...bottlerocket-settings-models-v0.19.0
 
 ## [0.18.0] - 2026-01-05
 
