@@ -24,6 +24,10 @@ const IMAGE_GC_THRESHOLD_MIN: i32 = 0;
 // Define the bounds for the `time-slicing.replicas` field
 const TIME_SLICING_REPLICAS_MIN: i32 = 2;
 const TIME_SLICING_REPLICAS_MAX: i32 = i32::MAX;
+// Define the bounds for the `mps.replicas` field
+const MPS_REPLICAS_MIN: i32 = 2;
+// 48 is the current max supported on Volta and later cards
+const MPS_REPLICAS_MAX: i32 = 48;
 
 /// KubernetesName represents a string that contains a valid Kubernetes resource name.  It stores
 /// the original string and makes it accessible through standard traits.
@@ -1559,6 +1563,7 @@ pub struct NvidiaDevicePluginSettings {
     device_list_strategy: NvidiaDeviceListStrategy,
     device_sharing_strategy: NvidiaDeviceSharingStrategy,
     time_slicing: NvidiaTimeSlicingSettings,
+    mps: NvidiaMpsSettings,
     device_partitioning_strategy: NvidiaDevicePartitioningStrategy,
     mig: NvidiaMigSettings,
 }
@@ -1612,6 +1617,7 @@ impl IntoIterator for NvidiaDeviceListStrategy {
 pub enum NvidiaDeviceSharingStrategy {
     None,
     TimeSlicing,
+    Mps,
 }
 
 #[model(impl_default = true)]
@@ -1619,6 +1625,13 @@ pub struct NvidiaTimeSlicingSettings {
     replicas: BoundedI32<TIME_SLICING_REPLICAS_MIN, TIME_SLICING_REPLICAS_MAX>,
     rename_by_default: bool,
     fail_requests_greater_than_one: bool,
+}
+
+/// NvidiaMpsSettings contains the settings for NVIDIA Multi-Process Service (MPS) GPU sharing.
+#[model(impl_default = true)]
+pub struct NvidiaMpsSettings {
+    replicas: BoundedI32<MPS_REPLICAS_MIN, MPS_REPLICAS_MAX>,
+    rename_by_default: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
@@ -1768,6 +1781,7 @@ mod test_nvidia_device_plugins {
                 ),),
                 device_sharing_strategy: None,
                 time_slicing: None,
+                mps: None,
                 device_partitioning_strategy: None,
                 mig: None
             }
@@ -1791,6 +1805,7 @@ mod test_nvidia_device_plugins {
                 ),),
                 device_sharing_strategy: Some(NvidiaDeviceSharingStrategy::TimeSlicing),
                 time_slicing: None,
+                mps: None,
                 device_partitioning_strategy: None,
                 mig: None
             }
@@ -1822,6 +1837,7 @@ mod test_nvidia_device_plugins {
                 ),),
                 device_sharing_strategy: None,
                 time_slicing: None,
+                mps: None,
                 device_partitioning_strategy: Some(NvidiaDevicePartitioningStrategy::MIG),
                 mig: None
             }
@@ -1846,6 +1862,7 @@ mod test_nvidia_device_plugins {
                 ),),
                 device_sharing_strategy: None,
                 time_slicing: None,
+                mps: None,
                 device_partitioning_strategy: Some(NvidiaDevicePartitioningStrategy::MIG),
                 mig: Some(NvidiaMigSettings {
                     profile: Some(HashMap::from([(
@@ -1948,5 +1965,41 @@ mod test_nvidia_device_plugins {
         assert_eq!(results_4, test_json_4);
         assert_eq!(results_5, test_json_5);
         assert_eq!(results_6, test_json_6);
+    }
+
+    #[test]
+    fn test_sharing_strategy_accepts_mps() {
+        let json = r#"{"device-sharing-strategy":"mps"}"#;
+        let settings: NvidiaDevicePluginSettings = serde_json::from_str(json).unwrap();
+        assert_eq!(
+            settings.device_sharing_strategy,
+            Some(NvidiaDeviceSharingStrategy::Mps)
+        );
+    }
+
+    #[test]
+    fn test_mps_replicas_valid_range() {
+        for replicas in [2, 24, 48] {
+            let json = format!(r#"{{"mps":{{"replicas":{}}}}}"#, replicas);
+            let settings: NvidiaDevicePluginSettings = serde_json::from_str(&json).unwrap();
+            let actual = settings
+                .mps
+                .as_ref()
+                .unwrap()
+                .replicas
+                .as_ref()
+                .unwrap()
+                .get();
+            assert_eq!(actual, replicas);
+        }
+    }
+
+    #[test]
+    fn test_mps_replicas_rejects_out_of_range() {
+        for replicas in [0, 1, -1, 49] {
+            let json = format!(r#"{{"mps":{{"replicas":{}}}}}"#, replicas);
+            let result: Result<NvidiaDevicePluginSettings, _> = serde_json::from_str(&json);
+            assert!(result.is_err(), "replicas={} should be rejected", replicas);
+        }
     }
 }
