@@ -9,7 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.19.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.20.0...HEAD
+
+## [0.20.0] - 2026-01-14
+
+## Model Changes
+
+### Added
+
+- Added MPS GPU sharing settings model with `NvidiaMpsSettings` struct and `Mps` variant to `NvidiaDeviceSharingStrategy` ([#107])
+
+### Removed
+
+- Reverted `fail-cgroup-v1` kubernetes setting ([#111])
+
+[#107]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/107
+[#111]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/111
+
+[0.20.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.19.0...bottlerocket-settings-models-v0.20.0
 
 ## [0.19.0] - 2026-01-07
 
