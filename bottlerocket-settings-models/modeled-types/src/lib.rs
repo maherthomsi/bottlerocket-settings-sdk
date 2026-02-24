@@ -24,6 +24,9 @@ pub mod error {
         #[snafu(display("Invalid base64 input: {}", source))]
         InvalidBase64 { source: base64::DecodeError },
 
+        #[snafu(display("Invalid JSON: {}", source))]
+        InvalidJson { source: serde_json::Error },
+
         #[snafu(display(
             "Identifiers may only contain ASCII alphanumerics plus hyphens, received '{}'",
             input

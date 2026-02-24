@@ -65,6 +65,60 @@ mod test_valid_base64 {
 
 // =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=
 
+/// ValidBase64Json can only be created by deserializing from valid base64 text that decodes to
+/// valid JSON. It stores the original base64 text, not the decoded form. Its purpose is input
+/// validation for base64-encoded JSON configuration.
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+pub struct ValidBase64Json {
+    inner: String,
+}
+
+impl TryFrom<&str> for ValidBase64Json {
+    type Error = error::Error;
+
+    fn try_from(input: &str) -> Result<Self, Self::Error> {
+        let decoded = base64::engine::general_purpose::STANDARD
+            .decode(input)
+            .context(error::InvalidBase64Snafu)?;
+        serde_json::from_slice::<serde_json::Value>(&decoded).context(error::InvalidJsonSnafu)?;
+        Ok(ValidBase64Json {
+            inner: input.to_string(),
+        })
+    }
+}
+
+string_impls_for!(ValidBase64Json, "ValidBase64Json");
+
+#[cfg(test)]
+mod test_valid_base64_json {
+    use super::ValidBase64Json;
+    use std::convert::TryFrom;
+
+    #[test]
+    fn valid_base64_json() {
+        let v = ValidBase64Json::try_from("eyJ0ZXN0IjoidmFsdWUifQ==").unwrap();
+        assert_eq!(v.as_ref(), "eyJ0ZXN0IjoidmFsdWUifQ==");
+        assert!(ValidBase64Json::try_from("e30=").is_ok());
+    }
+
+    #[test]
+    fn invalid_base64() {
+        assert!(ValidBase64Json::try_from("not base64!").is_err());
+    }
+
+    #[test]
+    fn valid_base64_invalid_json() {
+        assert!(ValidBase64Json::try_from("bm90IGpzb24=").is_err());
+    }
+
+    #[test]
+    fn empty_string() {
+        assert!(ValidBase64Json::try_from("").is_err());
+    }
+}
+
+// =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=
+
 /// SingleLineString can only be created by deserializing from a string that contains at most one
 /// line.  It stores the original form and makes it accessible through standard traits.  Its
 /// purpose is input validation, for example in cases where you want to accept input for a
