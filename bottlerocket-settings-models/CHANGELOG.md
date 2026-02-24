@@ -9,7 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.20.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.21.0...HEAD
+
+## [0.21.0] - 2026-02-24
+
+## Model Changes
+
+### Added
+
+- Added support for image-verifier plugins ([#114])
+
+[#114]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/114
+
+[0.21.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.20.0...bottlerocket-settings-models-v0.21.0
 
 ## [0.20.0] - 2026-01-14
 
