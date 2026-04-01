@@ -1555,6 +1555,64 @@ mod test_kubernetes_ids_per_pod_value {
 
 // =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=
 
+/// MaxAllowableNumaNodesValue represents a valid value for the topology manager
+/// `max-allowable-numa-nodes` policy option. Must be >= 8 (the default). Upstream validation:
+/// https://github.com/kubernetes/kubernetes/blob/473b7635de1d1af0fe2663922e1ca042c99cd1fa/pkg/kubelet/cm/topologymanager/policy_options.go#L89
+#[derive(Debug, Clone, Eq, PartialEq, Hash, Serialize, Deserialize)]
+#[serde(try_from = "u32", into = "u32")]
+pub struct MaxAllowableNumaNodesValue {
+    inner: u32,
+}
+
+impl TryFrom<u32> for MaxAllowableNumaNodesValue {
+    type Error = error::Error;
+
+    fn try_from(input: u32) -> Result<Self, Self::Error> {
+        ensure!(
+            input >= 8,
+            error::InvalidMaxAllowableNumaNodesValueSnafu { input }
+        );
+        Ok(MaxAllowableNumaNodesValue { inner: input })
+    }
+}
+
+impl From<MaxAllowableNumaNodesValue> for u32 {
+    fn from(val: MaxAllowableNumaNodesValue) -> Self {
+        val.inner
+    }
+}
+
+#[cfg(test)]
+mod test_kubernetes_max_allowable_numa_nodes_value {
+    use super::MaxAllowableNumaNodesValue;
+    use std::convert::TryFrom;
+
+    #[test]
+    fn good_values() {
+        for ok in &[8, 9, 16, 64] {
+            MaxAllowableNumaNodesValue::try_from(*ok).unwrap();
+        }
+    }
+
+    #[test]
+    fn bad_values() {
+        for err in &[0, 1, 7, 3] {
+            MaxAllowableNumaNodesValue::try_from(*err).unwrap_err();
+        }
+    }
+}
+
+// =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=
+
+/// KubernetesTopologyManagerPolicyOptions contains the settings to control Topology Management Policies on a node.
+#[model(impl_default = true)]
+pub struct KubernetesTopologyManagerPolicyOptions {
+    prefer_closest_numa_nodes: bool,
+    max_allowable_numa_nodes: MaxAllowableNumaNodesValue,
+}
+
+// =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=   =^..^=
+
 /// NvidiaDevicePluginSettings contains the device sharing and partitioning related settings for Nvidia gpu.
 #[model(impl_default = true)]
 pub struct NvidiaDevicePluginSettings {
