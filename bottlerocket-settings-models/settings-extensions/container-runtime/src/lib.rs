@@ -9,6 +9,7 @@ use std::convert::Infallible;
 pub struct ContainerRuntimeSettingsV1 {
     max_container_log_line_size: i32,
     max_concurrent_downloads: i32,
+    max_concurrent_unpacks: i32,
     #[serde(
         alias = "concurrent-layer-fetch-buffer",
         default,
@@ -71,6 +72,7 @@ mod test {
             Ok(GenerateResult::Complete(ContainerRuntimeSettingsV1 {
                 max_container_log_line_size: None,
                 max_concurrent_downloads: None,
+                max_concurrent_unpacks: None,
                 concurrent_download_chunk_size: None,
                 enable_unprivileged_ports: None,
                 enable_unprivileged_icmp: None,
@@ -84,6 +86,7 @@ mod test {
         let test_json = json!({
             "max-container-log-line-size": 1024,
             "max-concurrent-downloads": 5,
+            "max-concurrent-unpacks": 5,
             "concurrent-download-chunk-size": "64mb",
             "enable-unprivileged-ports": true,
             "enable-unprivileged-icmp": false,
@@ -100,6 +103,7 @@ mod test {
             ContainerRuntimeSettingsV1 {
                 max_container_log_line_size: Some(1024),
                 max_concurrent_downloads: Some(5),
+                max_concurrent_unpacks: Some(5),
                 concurrent_download_chunk_size: Some(64000000), // 64mb in bytes
                 enable_unprivileged_ports: Some(true),
                 enable_unprivileged_icmp: Some(false),
@@ -114,6 +118,7 @@ mod test {
         let expected_json = json!({
             "max-container-log-line-size": 1024,
             "max-concurrent-downloads": 5,
+            "max-concurrent-unpacks": 5,
             "concurrent-download-chunk-size": 64000000, // Serialized as number
             "enable-unprivileged-ports": true,
             "enable-unprivileged-icmp": false,
@@ -128,6 +133,7 @@ mod test {
         let test_json = json!({
             "max-container-log-line-size": 2048,
             "max-concurrent-downloads": 10,
+            "max-concurrent-unpacks": 3,
             "concurrent-layer-fetch-buffer": "128mb",
             "enable-unprivileged-ports": false,
             "enable-unprivileged-icmp": true,
@@ -142,6 +148,7 @@ mod test {
             ContainerRuntimeSettingsV1 {
                 max_container_log_line_size: Some(2048),
                 max_concurrent_downloads: Some(10),
+                max_concurrent_unpacks: Some(3),
                 concurrent_download_chunk_size: Some(128000000), // 128mb in bytes
                 enable_unprivileged_ports: Some(false),
                 enable_unprivileged_icmp: Some(true),
