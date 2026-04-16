@@ -84,6 +84,7 @@ mod test {
             device_plugins,
             KubeletDevicePluginsV1 {
                 nvidia: Some(NvidiaDevicePluginSettings {
+                    enabled: None,
                     pass_device_specs: Some(true),
                     device_id_strategy: Some(NvidiaDeviceIdStrategy::Index),
                     device_list_strategy: Some(NvidiaDeviceListStrategy::Vector(vec![
@@ -120,6 +121,7 @@ mod test {
             device_plugins,
             KubeletDevicePluginsV1 {
                 nvidia: Some(NvidiaDevicePluginSettings {
+                    enabled: None,
                     pass_device_specs: Some(true),
                     device_id_strategy: Some(NvidiaDeviceIdStrategy::Index),
                     device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(

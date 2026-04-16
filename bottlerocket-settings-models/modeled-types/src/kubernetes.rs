@@ -1616,6 +1616,7 @@ pub struct KubernetesTopologyManagerPolicyOptions {
 /// NvidiaDevicePluginSettings contains the device sharing and partitioning related settings for Nvidia gpu.
 #[model(impl_default = true)]
 pub struct NvidiaDevicePluginSettings {
+    enabled: bool,
     pass_device_specs: bool,
     device_id_strategy: NvidiaDeviceIdStrategy,
     device_list_strategy: NvidiaDeviceListStrategy,
@@ -1832,6 +1833,7 @@ mod test_nvidia_device_plugins {
         assert_eq!(
             nvidia_device_plugins,
             NvidiaDevicePluginSettings {
+                enabled: None,
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
                 device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
@@ -1856,6 +1858,7 @@ mod test_nvidia_device_plugins {
         assert_eq!(
             nvidia_device_plugins,
             NvidiaDevicePluginSettings {
+                enabled: None,
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
                 device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
@@ -1888,6 +1891,7 @@ mod test_nvidia_device_plugins {
         assert_eq!(
             nvidia_device_plugins,
             NvidiaDevicePluginSettings {
+                enabled: None,
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
                 device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
@@ -1913,6 +1917,7 @@ mod test_nvidia_device_plugins {
         assert_eq!(
             nvidia_device_plugins,
             NvidiaDevicePluginSettings {
+                enabled: None,
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
                 device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
