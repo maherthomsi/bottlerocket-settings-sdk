@@ -1782,6 +1782,27 @@ mod test_nvidia_device_plugins {
     }
 
     #[test]
+    fn nvidia_device_plugin_enabled_true() {
+        let json = r#"{"enabled": true}"#;
+        let settings: NvidiaDevicePluginSettings = serde_json::from_str(json).unwrap();
+        assert_eq!(settings.enabled, Some(true));
+    }
+
+    #[test]
+    fn nvidia_device_plugin_enabled_false() {
+        let json = r#"{"enabled": false}"#;
+        let settings: NvidiaDevicePluginSettings = serde_json::from_str(json).unwrap();
+        assert_eq!(settings.enabled, Some(false));
+    }
+
+    #[test]
+    fn nvidia_device_plugin_enabled_absent() {
+        let json = r#"{}"#;
+        let settings: NvidiaDevicePluginSettings = serde_json::from_str(json).unwrap();
+        assert_eq!(settings.enabled, None);
+    }
+
+    #[test]
     fn valid_gpu_model() {
         for ok in &[
             "a100.40gb",
