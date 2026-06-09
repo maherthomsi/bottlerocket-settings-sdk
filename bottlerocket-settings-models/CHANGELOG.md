@@ -9,7 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.23.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.24.0...HEAD
+
+## [0.24.0] - 2026-06-09
+
+### Changed
+
+- Add `enabled` field to `NvidiaDevicePluginSettings` to allow disabling the NVIDIA k8s device plugin via API ([#135])
+
+[#135]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/135
+
+[0.24.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.23.0...bottlerocket-settings-models-v0.24.0
 
 ## [0.23.0] - 2026-04-06
 
