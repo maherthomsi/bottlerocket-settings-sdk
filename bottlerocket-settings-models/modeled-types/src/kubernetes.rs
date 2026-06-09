@@ -1616,6 +1616,7 @@ pub struct KubernetesTopologyManagerPolicyOptions {
 /// NvidiaDevicePluginSettings contains the device sharing and partitioning related settings for Nvidia gpu.
 #[model(impl_default = true)]
 pub struct NvidiaDevicePluginSettings {
+    enabled: bool,
     pass_device_specs: bool,
     device_id_strategy: NvidiaDeviceIdStrategy,
     device_list_strategy: NvidiaDeviceListStrategy,
@@ -1781,6 +1782,27 @@ mod test_nvidia_device_plugins {
     }
 
     #[test]
+    fn nvidia_device_plugin_enabled_true() {
+        let json = r#"{"enabled": true}"#;
+        let settings: NvidiaDevicePluginSettings = serde_json::from_str(json).unwrap();
+        assert_eq!(settings.enabled, Some(true));
+    }
+
+    #[test]
+    fn nvidia_device_plugin_enabled_false() {
+        let json = r#"{"enabled": false}"#;
+        let settings: NvidiaDevicePluginSettings = serde_json::from_str(json).unwrap();
+        assert_eq!(settings.enabled, Some(false));
+    }
+
+    #[test]
+    fn nvidia_device_plugin_enabled_absent() {
+        let json = r#"{}"#;
+        let settings: NvidiaDevicePluginSettings = serde_json::from_str(json).unwrap();
+        assert_eq!(settings.enabled, None);
+    }
+
+    #[test]
     fn valid_gpu_model() {
         for ok in &[
             "a100.40gb",
@@ -1832,6 +1854,7 @@ mod test_nvidia_device_plugins {
         assert_eq!(
             nvidia_device_plugins,
             NvidiaDevicePluginSettings {
+                enabled: None,
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
                 device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
@@ -1856,6 +1879,7 @@ mod test_nvidia_device_plugins {
         assert_eq!(
             nvidia_device_plugins,
             NvidiaDevicePluginSettings {
+                enabled: None,
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
                 device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
@@ -1888,6 +1912,7 @@ mod test_nvidia_device_plugins {
         assert_eq!(
             nvidia_device_plugins,
             NvidiaDevicePluginSettings {
+                enabled: None,
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
                 device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
@@ -1913,6 +1938,7 @@ mod test_nvidia_device_plugins {
         assert_eq!(
             nvidia_device_plugins,
             NvidiaDevicePluginSettings {
+                enabled: None,
                 pass_device_specs: Some(false),
                 device_id_strategy: Some(NvidiaDeviceIdStrategy::Uuid),
                 device_list_strategy: Some(NvidiaDeviceListStrategy::Scalar(
