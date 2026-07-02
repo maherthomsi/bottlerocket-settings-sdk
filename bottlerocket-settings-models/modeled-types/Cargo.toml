@@ -27,5 +27,8 @@ snafu.workspace = true
 url.workspace = true
 x509-parser.workspace = true
 
+[dev-dependencies]
+test-case.workspace = true
+
 [lints]
 workspace = true
