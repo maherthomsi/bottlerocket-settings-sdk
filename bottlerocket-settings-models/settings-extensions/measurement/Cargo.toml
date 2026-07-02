@@ -1,0 +1,18 @@
+[package]
+name = "settings-extension-measurement"
+version = "0.1.0"
+license = "Apache-2.0 OR MIT"
+edition = "2021"
+publish = false
+
+[dependencies]
+bottlerocket-modeled-types.workspace = true
+bottlerocket-model-derive.workspace = true
+bottlerocket-settings-sdk.workspace = true
+env_logger.workspace = true
+serde = { workspace = true, features = ["derive"] }
+serde_json.workspace = true
+snafu.workspace = true
+
+[lints]
+workspace = true
