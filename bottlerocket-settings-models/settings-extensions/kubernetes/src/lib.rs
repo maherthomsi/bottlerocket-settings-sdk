@@ -102,6 +102,7 @@ pub struct KubernetesSettingsV1 {
     hostname_override: ValidLinuxHostname,
     ids_per_pod: KubernetesIdsPerPodValue,
     max_parallel_image_pulls: i32,
+    container_runtime_endpoint: Url,
 }
 
 type Result<T> = std::result::Result<T, Infallible>;
@@ -210,6 +211,7 @@ mod test {
                 static_pods_enabled: None,
                 ids_per_pod: None,
                 max_parallel_image_pulls: None,
+                container_runtime_endpoint: None,
             })
         );
     }
@@ -232,6 +234,26 @@ mod test {
                 hostname_override_source: Some(KubernetesHostnameOverrideSource::PrivateDNSName),
                 ..Default::default()
             }
+        );
+    }
+
+    #[test]
+    fn test_serde_container_runtime_endpoint() {
+        // Backwards compatible: existing user-data that omits the field
+        // deserializes fine and the field reads back as None.
+        let without: KubernetesSettingsV1 =
+            serde_json::from_str(r#"{"cluster-name": "my-cluster"}"#).unwrap();
+        assert!(without.container_runtime_endpoint.is_none());
+
+        // Unix-socket URIs parse and round-trip losslessly, which is
+        // the intended shape for a CRI endpoint override.
+        let with: KubernetesSettingsV1 = serde_json::from_str(
+            r#"{"container-runtime-endpoint": "unix:///run/containerd/containerd.sock"}"#,
+        )
+        .unwrap();
+        assert_eq!(
+            with.container_runtime_endpoint,
+            Some("unix:///run/containerd/containerd.sock".try_into().unwrap())
         );
     }
 }
