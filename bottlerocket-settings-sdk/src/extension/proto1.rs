@@ -22,7 +22,7 @@ use tracing::instrument;
 pub fn run_extension<P: Proto1>(extension: P, cmd: Proto1Command) -> ExitCode {
     match try_run_extension(extension, cmd) {
         Ok(output) => {
-            println!("{}", &output);
+            println!("{output}");
             ExitCode::SUCCESS
         }
         Err(e) => {
