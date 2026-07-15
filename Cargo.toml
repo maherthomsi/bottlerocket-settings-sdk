@@ -42,6 +42,7 @@ members = [
     "bottlerocket-settings-models/settings-extensions/oci-defaults",
     "bottlerocket-settings-models/settings-extensions/oci-hooks",
     "bottlerocket-settings-models/settings-extensions/pki",
+    "bottlerocket-settings-models/settings-extensions/measurement",
     "bottlerocket-settings-models/settings-extensions/updates",
 
     # Settings Extension SDK
@@ -80,6 +81,7 @@ settings-extension-image-verifier-plugins = { path = "./bottlerocket-settings-mo
 settings-extension-kernel = { path = "./bottlerocket-settings-models/settings-extensions/kernel", version = "0.1" }
 settings-extension-kubernetes = { path = "./bottlerocket-settings-models/settings-extensions/kubernetes", version = "0.10" }
 settings-extension-kubelet-device-plugins = { path = "./bottlerocket-settings-models/settings-extensions/kubelet-device-plugins", version = "0.4" }
+settings-extension-measurement = { path = "./bottlerocket-settings-models/settings-extensions/measurement", version = "0.1" }
 settings-extension-metrics = { path = "./bottlerocket-settings-models/settings-extensions/metrics", version = "0.1" }
 settings-extension-motd = { path = "./bottlerocket-settings-models/settings-extensions/motd", version = "0.1" }
 settings-extension-network = { path = "./bottlerocket-settings-models/settings-extensions/network", version = "0.1" }
