@@ -9,7 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - See [unreleased changes here]
 
-[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.24.0...HEAD
+[unreleased changes here]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.25.0...HEAD
+
+## [0.25.0] - 2026-07-15
+
+### Changed
+
+- Added support for `hugepages.static` and `hugepages.transparent` in `settings.kernel` ([#139])
+- Added `settings.measurement` to exclude settings from PCR8 measurement ([#140])
+- Added `container-runtime-endpoint` kubernetes settings ([#141]) - Thanks @shvbsle!
+
+[#139]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/139
+[#140]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/140
+[#141]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/pull/141
+
+[0.25.0]: https://github.com/bottlerocket-os/bottlerocket-settings-sdk/compare/bottlerocket-settings-models-v0.24.0...bottlerocket-settings-models-v0.25.0
 
 ## [0.24.0] - 2026-06-09
 
