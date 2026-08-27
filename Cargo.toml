@@ -39,6 +39,7 @@ members = [
     "bottlerocket-settings-models/settings-extensions/network",
     "bottlerocket-settings-models/settings-extensions/ntp",
     "bottlerocket-settings-models/settings-extensions/nvidia-container-runtime",
+    "bottlerocket-settings-models/settings-extensions/kubelet-dra-drivers",
     "bottlerocket-settings-models/settings-extensions/oci-defaults",
     "bottlerocket-settings-models/settings-extensions/oci-hooks",
     "bottlerocket-settings-models/settings-extensions/pki",
@@ -87,6 +88,7 @@ settings-extension-motd = { path = "./bottlerocket-settings-models/settings-exte
 settings-extension-network = { path = "./bottlerocket-settings-models/settings-extensions/network", version = "0.1" }
 settings-extension-ntp = { path = "./bottlerocket-settings-models/settings-extensions/ntp", version = "0.1" }
 settings-extension-nvidia-container-runtime = { path = "./bottlerocket-settings-models/settings-extensions/nvidia-container-runtime", version = "0.1" }
+settings-extension-kubelet-dra-drivers = { path = "./bottlerocket-settings-models/settings-extensions/kubelet-dra-drivers", version = "0.1" }
 settings-extension-oci-defaults = { path = "./bottlerocket-settings-models/settings-extensions/oci-defaults", version = "0.1" }
 settings-extension-oci-hooks = { path = "./bottlerocket-settings-models/settings-extensions/oci-hooks", version = "0.1" }
 settings-extension-pki = { path = "./bottlerocket-settings-models/settings-extensions/pki", version = "0.1" }

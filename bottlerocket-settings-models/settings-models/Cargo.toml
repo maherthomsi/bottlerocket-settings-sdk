@@ -43,6 +43,7 @@ settings-extension-motd.workspace = true
 settings-extension-network.workspace = true
 settings-extension-ntp.workspace = true
 settings-extension-nvidia-container-runtime.workspace = true
+settings-extension-kubelet-dra-drivers.workspace = true
 settings-extension-oci-defaults.workspace = true
 settings-extension-oci-hooks.workspace = true
 settings-extension-pki.workspace = true
